@@ -1,7 +1,10 @@
 package com.sotomaque.ppmtool.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -10,10 +13,21 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "Project Name is Required")
     private String projectName;
+
+    @NotBlank(message = "Project Identifier is Required")
+    @Size(min = 4, max = 6, message = "Please use 4 to 6 Characters")
+    @Column(updatable = false, unique = true)
     private String projectIdentifier;
+
+    @NotBlank(message = "Project Description is Required")
     private String description;
+
+    @JsonFormat(pattern = "mm-dd-yyyy")
     private Date start_date;
+    @JsonFormat(pattern = "mm-dd-yyyy")
     private Date end_date;
 
     // created at / updated at logic
