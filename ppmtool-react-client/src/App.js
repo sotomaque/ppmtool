@@ -7,15 +7,22 @@ import Dashboard from './components/Dashboard';
 import AddProject from './components/Project/AddProject';
 import Header from './components/Layout/Header';
 
+import ProjectProvider from './context/ProjectProvider';
+
+
+
 
 function App() {
+
   return (
     <Router>
-      <Header />
-      <Switch>
-        <Route exact path="/" component={Dashboard} />
-        <Route path="/addProject" component={AddProject} />
-      </Switch>
+      <ProjectProvider>
+        <Header />
+        <Switch>
+          <Route exact path="/" component={Dashboard} />
+          <Route path="/addProject" component={AddProject} />
+        </Switch>
+      </ProjectProvider>
     </Router>
  
     
