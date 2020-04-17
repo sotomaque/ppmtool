@@ -8,12 +8,13 @@ const AddProject = () => {
     const [start_date, setStartDate] = React.useState('');
     const [end_date, setEndDate] = React.useState('');
 
-    const [hasError, setHasError] = React.useState(false);
 
+
+    const [errorName, setErrorName] = React.useState('');
+    const [errorDescription, setErrorDescription] = React.useState('');
+    const [errorId, setErrorId] = React.useState('');
+    
     let history = useHistory();
-
-    // if response contains 'id', post was successful
-    // otherwise we have errors and must display them
 
     const project = {
         projectName,
@@ -24,28 +25,47 @@ const AddProject = () => {
     }
 
     function checkForErrors(response) {
-        if (response.id === null) {
-            console.error('error postiting project ', response)
-            setHasError(true);
-        } else {
-            console.log('success ', response);
-            setHasError(false);
+        if (response.id) {
+            setErrorDescription('');
+            setErrorName('');
+            setErrorId('');
+
             history.push('/');
+        } else {
+            console.error('error postiting project ', response);
+
+            if (response.description) {
+                setErrorDescription(response.description);
+            } else {
+                setErrorDescription('');
+            }
+
+            if (response.projectName) {
+                setErrorName(response.projectName);
+            } else {
+                setErrorName('');
+            }
+
+            if (response.projectIdentifier) {
+                setErrorId(response.projectIdentifier);
+            } else {
+                setErrorId('');
+            }
         }
     }
 
     function handleSubmit(e) {
         e.preventDefault();
-        // POST request using fetch inside useEffect React hook
+ 
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(project)
         };
+        
         fetch('http://www.localhost:8080/api/project', requestOptions)
             .then(response => response.json())
             .then(data => checkForErrors(data))
-            
         .catch((error) => console.error('Error: ', error));
     }
 
@@ -66,6 +86,11 @@ const AddProject = () => {
                                     value={projectName}
                                     onChange={(event) => setProjectName(event.target.value)}
                                 />
+                                {
+                                    errorName && (
+                                        <label style={{color: 'red'}}>{errorName}</label>
+                                    )
+                                }
                             </div>
                             <div className="form-group">
                                 <input 
@@ -76,6 +101,11 @@ const AddProject = () => {
                                     value={projectIdentifier}
                                     onChange={(event) => setProjectIdentifier(event.target.value)} 
                                 />
+                                {
+                                    errorId && (
+                                        <label style={{color: 'red'}}>{errorId}</label>
+                                    )
+                                }
                             </div>
                             <div className="form-group">
                                 <textarea 
@@ -85,6 +115,11 @@ const AddProject = () => {
                                     value={description}
                                     onChange={(event) => setDescription(event.target.value)}
                                 ></textarea>
+                                {
+                                    errorDescription && (
+                                        <label style={{color: 'red'}}>{errorDescription}</label>
+                                    )
+                                }
                             </div>
                             <h6>Start Date</h6>
                             <div className="form-group">
