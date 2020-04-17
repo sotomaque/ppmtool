@@ -10,7 +10,7 @@ const ProjectItem = () => {
 
   useEffect(() => {
     getProjects();
-  }, []);
+  }, [projects]);
 
   console.log(projects);
 

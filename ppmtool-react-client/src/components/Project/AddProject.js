@@ -8,7 +8,12 @@ const AddProject = () => {
     const [start_date, setStartDate] = React.useState('');
     const [end_date, setEndDate] = React.useState('');
 
+    const [hasError, setHasError] = React.useState(false);
+
     let history = useHistory();
+
+    // if response contains 'id', post was successful
+    // otherwise we have errors and must display them
 
     const project = {
         projectName,
@@ -16,6 +21,17 @@ const AddProject = () => {
         description,
         start_date,
         end_date
+    }
+
+    function checkForErrors(response) {
+        if (response.id === null) {
+            console.error('error postiting project ', response)
+            setHasError(true);
+        } else {
+            console.log('success ', response);
+            setHasError(false);
+            history.push('/');
+        }
     }
 
     function handleSubmit(e) {
@@ -28,7 +44,9 @@ const AddProject = () => {
         };
         fetch('http://www.localhost:8080/api/project', requestOptions)
             .then(response => response.json())
-            .then(history.push('/'));
+            .then(data => checkForErrors(data))
+            
+        .catch((error) => console.error('Error: ', error));
     }
 
     return (
