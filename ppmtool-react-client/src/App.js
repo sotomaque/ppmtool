@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Dashboard from './components/Dashboard';
 import AddProject from './components/Project/AddProject';
+import EditProject from './components/Project/EditProject';
 import Header from './components/Layout/Header';
 
 import ProjectProvider from './context/ProjectProvider';
@@ -21,6 +22,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Dashboard} />
           <Route path="/addProject" component={AddProject} />
+          <Route path="/editProject/:id" component={EditProject} />
         </Switch>
       </ProjectProvider>
     </Router>

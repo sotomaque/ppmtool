@@ -35,12 +35,31 @@ const ProjectProvider = (props) => {
         }
     }
 
+    const deleteProject = async (id) => {
+        
+        try {
+            const requestOptions = {
+                method: 'DELETE'
+            };
+
+            dispatch({ type: 'SENDING_REQUEST' });
+            await fetch(`http://www.localhost:8080/api/project/${id}`, requestOptions);
+            dispatch({ type: 'REQUEST_FINISHED' });
+
+
+        } catch (e) {
+            console.error(e);
+        }
+        
+    }
+
     return (
         <ProjectContext.Provider value={{
             projects: state.projects,
             currentProject: state.currentProject,
             loading: state.loading,
-            getProjects: getProjects
+            getProjects,
+            deleteProject
         }} >
             {props.children}
         </ProjectContext.Provider>

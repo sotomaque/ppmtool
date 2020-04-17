@@ -1,31 +1,31 @@
 import React, { useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import ProjectContext from '../../context/ProjectContext';
 
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-
 import { CircularProgress } from '@material-ui/core';
 
 
 const ProjectItem = () => {
 
   const projectContext = useContext(ProjectContext);
-  const { getProjects, projects, loading } = projectContext;
+  const { getProjects, deleteProject, projects, loading } = projectContext;
   const [refetchData, setRefetchData] = React.useState(false);
 
   useEffect(() => {
     getProjects();
   }, [refetchData]);
 
-  function showAlert(e, id) {
+  function showAlert(id) {
     confirmAlert({
       title: 'Confirm to submit',
       message: 'Are you sure to do this.',
       buttons: [
         {
           label: 'Yes',
-          onClick: () => {handleDelete(e, id)}
+          onClick: () => {deleteProject(id); setRefetchData(true)}
         },
         {
           label: 'No',
@@ -33,15 +33,6 @@ const ProjectItem = () => {
         }
       ]
     });
-  }
-
-  function handleDelete(e, id) {
-    e.preventDefault();
-    const requestOptions = {
-      method: 'DELETE'
-    };
-    fetch(`http://www.localhost:8080/api/project/${id}`, requestOptions)
-      .then(setRefetchData(true));
   }
 
   if (loading) {
@@ -82,16 +73,16 @@ const ProjectItem = () => {
                           <i className="fa fa-flag-checkered pr-1">  Project Board </i>
                         </li>
                       </a>
-                      <a href="#">
+                      <Link to={`/editProject/${project.projectIdentifier}`}>
                         <li className="list-group-item update">
                           <i className="fa fa-edit pr-1">  Update Project Info</i>
                         </li>
-                      </a>
-                      <button onClick={(e) => showAlert(e, project.projectIdentifier)} style={{ border: 'none' }}>
+                      </Link>
+                      <div onClick={() => showAlert(project.projectIdentifier)} style={{ border: 'none' }}>
                         <li className="list-group-item delete">
                           <i className="fa fa-minus-circle pr-1">  Delete Project</i>
                         </li>
-                      </button>
+                      </div>
                     </ul>
                   </div>
                   {/** End of Proj Actions **/}
