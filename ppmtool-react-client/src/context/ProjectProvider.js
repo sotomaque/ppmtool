@@ -35,30 +35,6 @@ const ProjectProvider = (props) => {
         }
     }
 
-    const postProject = async () => {
-        
-        try {
-            dispatch({
-                type: 'SENDING_REQUEST'
-            });
-
-            const res = await axios.post('http://www.localhost:8080/api/project/all');
-            const data = await res.json();
-
-            dispatch({ 
-                type: 'REQUEST_FINISHED'
-            });
-
-            dispatch({ 
-                type: 'SET_PROJECTS',
-                payload: data
-            });
-
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
     return (
         <ProjectContext.Provider value={{
             projects: state.projects,

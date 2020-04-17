@@ -2,32 +2,64 @@ import React, { useContext, useEffect } from "react";
 
 import ProjectContext from '../../context/ProjectContext';
 
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
+import { CircularProgress } from '@material-ui/core';
+
 
 const ProjectItem = () => {
 
   const projectContext = useContext(ProjectContext);
   const { getProjects, projects, loading } = projectContext;
+  const [refetchData, setRefetchData] = React.useState(false);
 
   useEffect(() => {
     getProjects();
-  }, [projects]);
+  }, [refetchData]);
 
-  console.log(projects);
+  function showAlert(e, id) {
+    confirmAlert({
+      title: 'Confirm to submit',
+      message: 'Are you sure to do this.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => {handleDelete(e, id)}
+        },
+        {
+          label: 'No',
+          onClick: () => {return false;}
+        }
+      ]
+    });
+  }
 
   function handleDelete(e, id) {
     e.preventDefault();
-    // DELETE post request
     const requestOptions = {
-        method: 'DELETE'
+      method: 'DELETE'
     };
-    fetch(`http://www.localhost:8080/api/project/${id}`, requestOptions);
+    fetch(`http://www.localhost:8080/api/project/${id}`, requestOptions)
+      .then(setRefetchData(true));
   }
+
+  if (loading) {
+    return (
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            marginTop: 50
+        }}>
+            <CircularProgress/>
+        </div>
+    );
+  } 
 
   return (
     <div className="container">
       <div className="card card-body bg-light mb-3">
-        
-       
         {
           projects && projects.map(project => {
             return (
@@ -55,7 +87,7 @@ const ProjectItem = () => {
                           <i className="fa fa-edit pr-1">  Update Project Info</i>
                         </li>
                       </a>
-                      <button onClick={(e) => handleDelete(e, project.projectIdentifier)} style={{ border: 'none' }}>
+                      <button onClick={(e) => showAlert(e, project.projectIdentifier)} style={{ border: 'none' }}>
                         <li className="list-group-item delete">
                           <i className="fa fa-minus-circle pr-1">  Delete Project</i>
                         </li>
