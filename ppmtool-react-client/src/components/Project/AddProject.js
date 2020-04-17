@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { useHistory } from "react-router-dom";
 
 const AddProject = () => {
     const [projectName, setProjectName] = React.useState('');
@@ -7,9 +8,27 @@ const AddProject = () => {
     const [start_date, setStartDate] = React.useState('');
     const [end_date, setEndDate] = React.useState('');
 
+    let history = useHistory();
+
+    const project = {
+        projectName,
+        projectIdentifier,
+        description,
+        start_date,
+        end_date
+    }
+
     function handleSubmit(e) {
         e.preventDefault();
-        console.log('project name: ', projectName, ' projectDesc: ', description, ' projectId: ', projectIdentifier, ' start date: ', start_date, ' end date: ', end_date, '\n');
+        // POST request using fetch inside useEffect React hook
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(project)
+        };
+        fetch('http://www.localhost:8080/api/project', requestOptions)
+            .then(response => response.json())
+            .then(history.push('/'));
     }
 
     return (

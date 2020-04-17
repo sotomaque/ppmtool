@@ -14,6 +14,15 @@ const ProjectItem = () => {
 
   console.log(projects);
 
+  function handleDelete(e, id) {
+    e.preventDefault();
+    // DELETE post request
+    const requestOptions = {
+        method: 'DELETE'
+    };
+    fetch(`http://www.localhost:8080/api/project/${id}`, requestOptions);
+  }
+
   return (
     <div className="container">
       <div className="card card-body bg-light mb-3">
@@ -22,7 +31,7 @@ const ProjectItem = () => {
         {
           projects && projects.map(project => {
             return (
-              <>
+              <React.Fragment key={project.projectIdentifier}>
                 <div className="row">
                   {/** Proj Category **/}
                   <div className="col-2">
@@ -46,18 +55,18 @@ const ProjectItem = () => {
                           <i className="fa fa-edit pr-1">  Update Project Info</i>
                         </li>
                       </a>
-                      <a href="">
+                      <button onClick={(e) => handleDelete(e, project.projectIdentifier)} style={{ border: 'none' }}>
                         <li className="list-group-item delete">
                           <i className="fa fa-minus-circle pr-1">  Delete Project</i>
                         </li>
-                      </a>
+                      </button>
                     </ul>
                   </div>
                   {/** End of Proj Actions **/}
                   
                 </div>
                 <hr />
-              </>
+              </React.Fragment>
             )
           })
         }
