@@ -58,10 +58,10 @@ const ProjectItem = () => {
     <div className="container">
       <div className="card card-body bg-light mb-3">
         {
-          projects && projects.map(project => {
+          projects && projects.map((project, index) => {
             return (
               <React.Fragment key={project.projectIdentifier}>
-                <div className="row">
+                <div className="row">                  
                   {/** Proj Category **/}
                   <div className="col-2">
                     <span className="mx-auto">{project.projectIdentifier}</span>
@@ -94,7 +94,12 @@ const ProjectItem = () => {
                   {/** End of Proj Actions **/}
                   
                 </div>
-                <hr />
+
+                {
+                  (index === projects.length - 1) ? <></> : <hr />
+                }
+     
+                
               </React.Fragment>
             )
           })
