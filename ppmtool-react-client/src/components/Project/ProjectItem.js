@@ -5,7 +5,8 @@ import ProjectContext from '../../context/ProjectContext';
 
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Button } from '@material-ui/core';
+import Moment from 'react-moment';
 
 
 const ProjectItem = () => {
@@ -16,23 +17,32 @@ const ProjectItem = () => {
 
   useEffect(() => {
     getProjects();
+    setRefetchData(false)
   }, [refetchData]);
 
+  console.log(projects);
+  
   function showAlert(id) {
+
     confirmAlert({
-      title: 'Confirm to submit',
-      message: 'Are you sure to do this.',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: () => {removeProject(id)}
-        },
-        {
-          label: 'No',
-          onClick: () => {return false;}
-        }
-      ]
-    });
+      customUI: ({ onClose }) => {
+        return (
+          <div className='custom-ui'>
+            <h1>Are you sure?</h1>
+            <p>This Action Cannot be Undone</p>
+            <Button variant="contained" color="primary"  onClick={onClose}>
+              No
+            </Button>
+            <Button className="float-right" variant="contained" color="secondary" onClick={() => {
+              removeProject(id)
+              onClose();
+            }}>
+              Yes, Delete it!
+            </Button>
+          </div>
+        );
+      }
+    })
   }
 
   async function removeProject(id) {
@@ -64,15 +74,26 @@ const ProjectItem = () => {
                 <div className="row">                  
                   {/** Proj Category **/}
                   <div className="col-2">
-                    <span className="mx-auto">{project.projectIdentifier}</span>
+                    <span className="mx-auto">Project ID: {project.projectIdentifier}</span>
                   </div>
                   {/** Proj Name + Description **/}
-                  <div className="col-lg-6 col-md-4 col-8">
+                  <div className="col-lg-4 col-md-4 col-8">
                     <h3>{project.projectName}</h3>
                     <p>{project.description}</p>
                   </div>
+                  {/** Proj Start End **/}
+                  <div className="col-lg-2 d-none d-lg-block">
+                    <p>Started on</p>
+                    <span><Moment format="MM/DD/YYYY" date={project.start_date} /></span>
+                  </div>
+                  {/** Proj Start End **/}
+                  <div className="col-lg-2 d-none d-lg-block">
+                    <p>Ends on</p>
+                    <span><Moment format="MM/DD/YYYY" date={project.end_date} /></span>
+                  </div>
+
                   {/** Proj Actions **/}
-                  <div className="col-md-4 d-none d-lg-block">
+                  <div className="col-md-2 d-none d-lg-block">
                     <ul className="list-group">
                       <a href="#">
                         <li className="list-group-item board">

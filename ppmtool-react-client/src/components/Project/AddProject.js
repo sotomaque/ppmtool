@@ -29,7 +29,6 @@ const AddProject = () => {
             setErrorDescription('');
             setErrorName('');
             setErrorId('');
-
             history.push('/');
         } else {
             console.error('error postiting project ', response);
@@ -65,7 +64,7 @@ const AddProject = () => {
         
         fetch('http://www.localhost:8080/api/project', requestOptions)
             .then(response => response.json())
-            .then(data => checkForErrors(data))
+            .then(data =>{ checkForErrors(data); console.dir(data) })
         .catch((error) => console.error('Error: ', error));
     }
 
