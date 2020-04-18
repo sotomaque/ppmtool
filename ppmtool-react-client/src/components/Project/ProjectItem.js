@@ -25,7 +25,7 @@ const ProjectItem = () => {
       buttons: [
         {
           label: 'Yes',
-          onClick: () => {deleteProject(id); setRefetchData(true)}
+          onClick: () => {removeProject(id)}
         },
         {
           label: 'No',
@@ -33,6 +33,12 @@ const ProjectItem = () => {
         }
       ]
     });
+  }
+
+  async function removeProject(id) {
+    await deleteProject(id);
+    setRefetchData(true);
+    console.log(refetchData);
   }
 
   if (loading) {
