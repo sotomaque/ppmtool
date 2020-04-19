@@ -16,7 +16,7 @@ public class ProjectTask {
     @Column(updatable = false)
     private String projectSequence;
 
-    @Column(updatable = false)
+    @Column(updatable = false, unique = true)
     private String projectIdentifier;
 
     @NotBlank(message = "Please include a project summary")
