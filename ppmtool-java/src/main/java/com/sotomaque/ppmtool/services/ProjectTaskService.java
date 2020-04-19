@@ -10,7 +10,6 @@ import com.sotomaque.ppmtool.repositories.ProjectTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class ProjectTaskService {
@@ -25,7 +24,6 @@ public class ProjectTaskService {
     private ProjectRepository projectRepository;
 
     public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask) {
-
         try {
             // want all project tasks to be added to a specific project (not null project)
             Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
@@ -57,7 +55,6 @@ public class ProjectTaskService {
         } catch (Exception e) {
             throw new ProjectNotFoundException("Project with ID: " + projectIdentifier + " does not exist");
         }
-
     }
 
     public Iterable<ProjectTask> findBacklogById(String id) {
@@ -82,7 +79,7 @@ public class ProjectTaskService {
         // make sure that our task exists
         ProjectTask projectTask = projectTaskRepository.findByProjectSequence(sequence);
         if (projectTask == null) {
-            throw new ProjectNotFoundException("Project Task: " + backlog_id + " does not exist.");
+            throw new ProjectNotFoundException("Project Task: " + sequence + " does not exist.");
         }
 
         // make sure that the backlog / project_id in the path correspond to the right project
@@ -92,4 +89,17 @@ public class ProjectTaskService {
 
         return projectTask;
     }
+
+    public ProjectTask updateByProjectSequence(ProjectTask updatedTask, String backlog_id, String sequence) {
+        ProjectTask projectTask = findProjectTaskByProjectSequence(backlog_id, sequence);
+        projectTask = updatedTask;
+
+        return projectTaskRepository.save(projectTask);
+    }
+
+    public void deleteProjectTaskByProjectSequence(String backlog_id, String sequence) {
+        ProjectTask projectTask = findProjectTaskByProjectSequence(backlog_id, sequence);
+        projectTaskRepository.delete(projectTask);
+    }
+
 }
