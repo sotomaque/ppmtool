@@ -1,12 +1,21 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
+import { makeStyles } from "@material-ui/core/styles";
+import styles from "../../assets/js/headerStyle.js";
+
+
+const useStyles = makeStyles(styles);
 
 const Header = () => {
+  const classes = useStyles();
+  const className = "navbar navbar-expand-sm navbar-dark";
   return (
-    <nav className="navbar navbar-expand-sm navbar-dark bg-primary mb-4">
+    <nav className={classes.bg + " " + className}>
       <div className="container">
-        <a className="navbar-brand" href="/">
+        <Link className="navbar-brand" to="/">
           Project Management Tool
-        </a>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -19,22 +28,22 @@ const Header = () => {
         <div className="collapse navbar-collapse" id="mobile-nav">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item">
-              <a className="nav-link" href="/">
+              <Link className="nav-link" to="/">
                 Dashboard
-              </a>
+              </Link>
             </li>
           </ul>
 
           <ul className="navbar-nav ml-auto">
             <li className="nav-item">
-              <a className="nav-link " href="register.html">
+              <Link className="nav-link " to="/signup">
                 Sign Up
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="login.html">
+              <Link className="nav-link" to="/login">
                 Login
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

@@ -29,7 +29,10 @@ const AddProject = () => {
             setErrorDescription('');
             setErrorName('');
             setErrorId('');
-            history.push('/');
+            history.push({
+                pathname: '/',
+                showSuccessAlert: true
+            });
         } else {
             console.error('error postiting project ', response);
 

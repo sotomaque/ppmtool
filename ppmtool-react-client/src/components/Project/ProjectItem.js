@@ -1,29 +1,51 @@
 import React, { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import ProjectContext from '../../context/ProjectContext';
 
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { CircularProgress, Button } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import Moment from 'react-moment';
 
 
-const ProjectItem = () => {
+const ProjectItem = (props) => {
+
+  const location = useLocation();
 
   const projectContext = useContext(ProjectContext);
   const { getProjects, deleteProject, projects, loading } = projectContext;
   const [refetchData, setRefetchData] = React.useState(false);
 
+  const [showSuccessDeleteAlert, setShowSuccessDeleteAlert] = React.useState(false);
+  const [showSuccessAddedAlert, setShowSuccessAddedAlert] = React.useState(false);
+
   useEffect(() => {
     getProjects();
-    setRefetchData(false)
-  }, [refetchData]);
+    setRefetchData(false);
+    showSuccessAdded();
+  }, [refetchData, location]);
 
-  console.log(projects);
+
+  function showSuccessDeleted() {
+    setShowSuccessDeleteAlert(true);
+    setTimeout(() => {
+      setShowSuccessDeleteAlert(false)
+    }, 3000)
+  }
+
+  function showSuccessAdded() {
+    if (location.showSuccessAlert) {
+      setShowSuccessAddedAlert(true)
+      setTimeout(() => {
+        setShowSuccessAddedAlert(false);
+      }, 3000)
+    }
+    
+  }
   
   function showAlert(id) {
-
     confirmAlert({
       customUI: ({ onClose }) => {
         return (
@@ -34,8 +56,9 @@ const ProjectItem = () => {
               No
             </Button>
             <Button className="float-right" variant="contained" color="secondary" onClick={() => {
-              removeProject(id)
+              removeProject(id);
               onClose();
+              showSuccessDeleted();
             }}>
               Yes, Delete it!
             </Button>
@@ -64,8 +87,15 @@ const ProjectItem = () => {
     );
   } 
 
+
   return (
     <div className="container">
+      {
+        showSuccessDeleteAlert && <Alert severity="success">Project Successfully Deleted!</Alert>
+      }
+      {
+        showSuccessAddedAlert && <Alert severity="success">Project Successfully Added to Board!</Alert>
+      }
       <div className="card card-body bg-light mb-3">
         {
           projects && projects.map((project, index) => {
@@ -81,15 +111,24 @@ const ProjectItem = () => {
                     <h3>{project.projectName}</h3>
                     <p>{project.description}</p>
                   </div>
+                  
                   {/** Proj Start End **/}
                   <div className="col-lg-2 d-none d-lg-block">
-                    <p>Started on</p>
-                    <span><Moment format="MM/DD/YYYY" date={project.start_date} /></span>
+                    
+                    {
+                      project.start_date !== null ? 
+                      (<><p>Started on</p><span><Moment format="MM/DD/YYYY" date={project.start_date} style={{color: 'blue'}} /></span></>) : 
+                      <span style={{color: 'blue', fontSize: '14px'}}>Click <em>Update Project</em> to set a Start Date</span>
+                    }
+                    
                   </div>
                   {/** Proj Start End **/}
                   <div className="col-lg-2 d-none d-lg-block">
-                    <p>Ends on</p>
-                    <span><Moment format="MM/DD/YYYY" date={project.end_date} /></span>
+                    {
+                      project.end_date !== null ? 
+                      (<><p>Ends on</p><span><Moment format="MM/DD/YYYY" date={project.end_date} style={{color: 'blue'}} /></span></>) : 
+                      <span style={{color: 'blue', fontSize: '14px'}}>Click <em>Update Project</em> to set a End Date</span>
+                    }
                   </div>
 
                   {/** Proj Actions **/}

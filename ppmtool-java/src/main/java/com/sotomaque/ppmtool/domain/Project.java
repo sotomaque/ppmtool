@@ -50,8 +50,6 @@ public class Project {
     @JsonIgnore
     private Backlog backlog;
 
-
-
     // no arg constructor
     public Project() {
     }
