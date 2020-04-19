@@ -1,17 +1,28 @@
 import React, { useContext, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 import ProjectContext from '../../context/ProjectContext';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { CircularProgress, Button } from '@material-ui/core';
+import { CircularProgress, Button, Typography } from '@material-ui/core';
+import Launch from '@material-ui/icons/Launch';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Update from '@material-ui/icons/Update';
+
 import Alert from '@material-ui/lab/Alert';
 import Moment from 'react-moment';
 
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
 
-const ProjectItem = (props) => {
-
+const ProjectItem = () => {
+  const classes = useStyles();
+  let history = useHistory();
   const location = useLocation();
 
   const projectContext = useContext(ProjectContext);
@@ -87,9 +98,13 @@ const ProjectItem = (props) => {
     );
   } 
 
+  function handleUpdateClicked(projectIdentifier) {
+    history.push(`/editProject/${projectIdentifier}`);
+  }
+
 
   return (
-    <div className="container">
+    <>
       {
         showSuccessDeleteAlert && <Alert severity="success">Project Successfully Deleted!</Alert>
       }
@@ -104,12 +119,12 @@ const ProjectItem = (props) => {
                 <div className="row">                  
                   {/** Proj Category **/}
                   <div className="col-2">
-                    <span className="mx-auto">Project ID: {project.projectIdentifier}</span>
+                    <span><Typography variant="subtitle1" color="textPrimary">Project ID: {project.projectIdentifier}</Typography></span>
                   </div>
                   {/** Proj Name + Description **/}
                   <div className="col-lg-4 col-md-4 col-8">
-                    <h3>{project.projectName}</h3>
-                    <p>{project.description}</p>
+                    <Typography variant="h4" color="textPrimary">{project.projectName}</Typography>
+                    <Typography variant="subtitle1" color="textPrimary">{project.description}</Typography>
                   </div>
                   
                   {/** Proj Start End **/}
@@ -133,23 +148,34 @@ const ProjectItem = (props) => {
 
                   {/** Proj Actions **/}
                   <div className="col-md-2 d-none d-lg-block">
-                    <ul className="list-group">
-                      <a href="#">
-                        <li className="list-group-item board">
-                          <i className="fa fa-flag-checkered pr-1">  Project Board </i>
-                        </li>
-                      </a>
-                      <Link to={`/editProject/${project.projectIdentifier}`}>
-                        <li className="list-group-item update">
-                          <i className="fa fa-edit pr-1">  Update Project Info</i>
-                        </li>
-                      </Link>
-                      <div onClick={() => showAlert(project.projectIdentifier)} style={{ border: 'none' }}>
-                        <li className="list-group-item delete">
-                          <i className="fa fa-minus-circle pr-1">  Delete Project</i>
-                        </li>
-                      </div>
-                    </ul>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      startIcon={<Launch />}
+                    >
+                      Launch
+                    </Button>  
+                    <br/>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      className={classes.button}
+                      startIcon={<DeleteIcon />}
+                      onClick={() => showAlert(project.projectIdentifier)}
+                    >
+                      Delete
+                    </Button>  
+                    <br />
+                    <Button
+                      variant="contained"
+                      color="default"
+                      className={classes.button}
+                      startIcon={<Update />}
+                      onClick={() => handleUpdateClicked(project.projectIdentifier)}
+                    >
+                      Update
+                    </Button>
                   </div>
                   {/** End of Proj Actions **/}
                   
@@ -165,7 +191,7 @@ const ProjectItem = (props) => {
           })
         }
       </div>
-    </div>
+    </>
   );
 };
 
