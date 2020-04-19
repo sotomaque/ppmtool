@@ -15,6 +15,7 @@ import Drawer from "@material-ui/core/Drawer";
 import Menu from "@material-ui/icons/Menu";
 // core components
 import styles from "../../assets/js/headerStyle.js";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(styles);
 
@@ -71,7 +72,13 @@ export default function Header(props) {
               {leftLinks}
             </Hidden>
           ) : (
-            brandComponent
+            <Link
+              to="/"
+              color="transparent"
+              className={classes.navLink}
+            >
+            {brandComponent}
+            </Link>
           )}
         </div>
         <Hidden smDown implementation="css">

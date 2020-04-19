@@ -12,7 +12,7 @@ import {
     drawerWidth
   } from "./material-kit-react.js";
   
-  const headerStyle = {
+  const headerStyle = theme => ({
     appBar: {
       display: "flex",
       border: "0",
@@ -67,6 +67,33 @@ import {
     },
     appResponsive: {
       margin: "20px 10px"
+    },
+    navLink: {
+      color: "inherit",
+      position: "relative",
+      padding: "0.9375rem",
+      fontWeight: "400",
+      fontSize: "12px",
+      textTransform: "uppercase",
+      borderRadius: "3px",
+      lineHeight: "20px",
+      textDecoration: "none",
+      margin: "0px",
+      display: "inline-flex",
+      "&:hover,&:focus": {
+        color: "white",
+        textDecoration: "none"
+      },
+      [theme.breakpoints.down("sm")]: {
+        width: "calc(100% - 30px)",
+        marginLeft: "15px",
+        marginBottom: "8px",
+        marginTop: "8px",
+        textAlign: "left",
+        "& > span:first-child": {
+          justifyContent: "flex-start"
+        }
+      }
     },
     primary: {
       backgroundColor: primaryColor,
@@ -147,7 +174,7 @@ import {
       paddingLeft: "0",
       ...transition
     }
-  };
+  });
   
   export default headerStyle;
   

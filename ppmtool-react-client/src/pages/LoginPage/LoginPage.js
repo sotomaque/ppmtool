@@ -9,20 +9,20 @@ import People from "@material-ui/icons/People";
 import Lock from '@material-ui/icons/Lock';
 
 // core components
-import GridContainer from "../components/Grid/GridContainer.js";
-import GridItem from "../components/Grid/GridItem.js";
-import Button from "../components/CustomButtons/Button.js";
-import Card from "../components/Card/Card.js";
-import CardBody from "../components/Card/CardBody.js";
-import CardHeader from "../components/Card/CardHeader";
-import CardFooter from "../components/Card/CardFooter.js";
-import CustomInput from "../components/CustomInput/CustomInput.js";
-import Header from '../components/Header/Header';
-import HeaderLinks from '../components/Header/HeaderLinks';
+import GridContainer from "../../components/Grid/GridContainer.js";
+import GridItem from "../../components/Grid/GridItem.js";
+import Button from "../../components/CustomButtons/Button.js";
+import Card from "../../components/Card/Card.js";
+import CardBody from "../../components/Card/CardBody.js";
+import CardHeader from "../../components/Card/CardHeader";
+import CardFooter from "../../components/Card/CardFooter.js";
+import CustomInput from "../../components/CustomInput/CustomInput.js";
+import Header from '../../components/Header/Header';
+import HeaderLinks from '../../components/Header/HeaderLinks';
 
-import styles from "../assets/js/login.js";
+import styles from "../../assets/js/login.js";
 
-import image from "../assets/img/bg7.jpg";
+import image from "../../assets/img/login.jpg";
 
 const useStyles = makeStyles(styles);
 
@@ -38,7 +38,7 @@ export default function LoginPage(props) {
         <Header
             color="transparent"
             brand="Personal Project Management"
-            rightLinks={<HeaderLinks />}
+            rightLinks={<HeaderLinks login={true} />}
             fixed
             changeColorOnScroll={{
             height: 200,

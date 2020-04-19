@@ -16,11 +16,14 @@ const useStyles = makeStyles(styles);
 export default function HeaderLinks(props) {
   
   const {signup} = props;
+  const login = props?.login;
 
   const [signupSelected, setSignUpSelected] = React.useState(signup);
+  const [loginSelected, setLoginSelected] = React.useState(login);
+
   
   function setSelectedStyles() {
-    console.log(signup)
+    console.log(login)
   }
   
   React.useEffect(() => {
@@ -33,7 +36,7 @@ export default function HeaderLinks(props) {
     <List className={classes.list}>      
       <ListItem className={classes.listItem}>
         <Link
-          to="/"
+          to="/dashboard"
           color="transparent"
           className={classes.navLink}
         >
@@ -41,7 +44,7 @@ export default function HeaderLinks(props) {
         </Link>
       </ListItem>
 
-      <ListItem className={classes.listItem}>
+      <ListItem className={classes.listItem + ' ' + `${loginSelected ? classes.active : ""}`}>
         <Link
           to="/login"
           color="transparent"
