@@ -8,13 +8,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import Header from "../../components/Header/Header.js";
 import HeaderLinks from "../../components/Header/HeaderLinks.js";
 import HeaderLinksLeft from "../../components/Header/HeaderLinksLeft.js";
-
 import Parallax from "../../components/Parallax/Parallax.js";
 // import Footer from "./components/Footer/Footer.js";
-
 import GridContainer from "../../components/Grid/GridContainer.js";
 import GridItem from "../../components/Grid/GridItem.js";
-
 
 import styles from "../../assets/js/landingPage.js";
 
@@ -56,7 +53,6 @@ export default function LandingPage(props) {
           <Dashboard />
         </div>
       </div>
-     
     </div>
   );
 }

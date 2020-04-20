@@ -24,12 +24,12 @@ import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles(styles);
 
-const AddProjectTaskPage = () => {
+const AddProjectTaskPage = (props) => {
   const classes = useStyles();
   let { id } = useParams();   
-
+  const { ...rest } = props;
   return (
-    <div className="mb-4">
+    <div>
       <Header
         color="transparent"
         brand="Personal Project Management"
@@ -40,6 +40,7 @@ const AddProjectTaskPage = () => {
           height: 400,
           color: "dark"
         }}
+        {...rest}
       />
       <Parallax filter image={image} small>
         <div className={classes.container}>
@@ -55,7 +56,6 @@ const AddProjectTaskPage = () => {
           <AddProjectTask />
         </div>
       </div>
-     
     </div>
   );
 }
