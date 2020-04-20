@@ -23,7 +23,7 @@ export default function HeaderLinks(props) {
 
   
   function setSelectedStyles() {
-    console.log(login)
+    // console.log(login)
   }
   
   React.useEffect(() => {

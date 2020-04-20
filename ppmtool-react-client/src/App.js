@@ -5,10 +5,12 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import LandingPage from './pages/LandingPage/LandingPage';
 import DashboardPage from './pages/DashboardPage/DashboardPage';
-import AddProject from './components/Project/AddProject';
+import AddProjectPage from './pages/AddProjectPage/AddProjectPage';
 import EditProject from './components/Project/EditProject';
+import ProjectBoardPage from './pages/ProjectBoardPage/ProjectBoardPage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import SignupPage from './pages/SignupPage/SignupPage';
+
 
 import ProjectProvider from './context/ProjectProvider';
 
@@ -21,8 +23,9 @@ function App() {
         <Switch>
           <Route exact path="/" component={LandingPage} />
           <Route exact path="/dashboard" component={DashboardPage} />
-          <Route path="/addProject" component={AddProject} />
+          <Route path="/addProject" component={AddProjectPage} />
           <Route path="/editProject/:id" component={EditProject} />
+          <Route path="/project/:id" component={ProjectBoardPage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/signup" component={SignupPage} />
         </Switch>

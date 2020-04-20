@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
 import ProjectContext from '../../context/ProjectContext';
+
 import { makeStyles } from '@material-ui/core/styles';
 
 import { confirmAlert } from 'react-confirm-alert';
@@ -102,7 +103,6 @@ const ProjectItem = () => {
     history.push(`/editProject/${projectIdentifier}`);
   }
 
-
   return (
     <>
       {
@@ -153,6 +153,7 @@ const ProjectItem = () => {
                       color="primary"
                       className={classes.button}
                       startIcon={<Launch />}
+                      onClick={() => history.push(`/project/${project.projectIdentifier}`)}
                     >
                       Launch
                     </Button>  

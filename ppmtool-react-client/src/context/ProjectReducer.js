@@ -18,6 +18,8 @@ export default (state, action) => {
                 ...state,
                 loading: false
             }
+            
+        
 
         default:
             throw new Error;

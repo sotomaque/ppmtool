@@ -1,7 +1,8 @@
 import React from "react";
-// nodejs library that concatenates classes
+import { useParams } from "react-router-dom";
+
 import classNames from "classnames";
-// @material-ui/core components
+
 import { makeStyles } from "@material-ui/core/styles";
 
 // core components
@@ -11,25 +12,20 @@ import GridContainer from "../../components/Grid/GridContainer.js";
 import GridItem from "../../components/Grid/GridItem.js";
 import HeaderLinks from "../../components/Header/HeaderLinks.js";
 import Parallax from "../../components/Parallax/Parallax.js";
+import ProjectBoard from "../../components/ProjectBoard/ProjectBoard.js";
 
 import styles from "../../assets/js/landingPage.js";
-
-// Sections for this page
-// import ProductSection from "./Sections/ProductSection.js";
-// import TeamSection from "./Sections/TeamSection.js";
-// import WorkSection from "./Sections/WorkSection.js";
-
 import image from "../../assets/img/dashboard.jpg";
-import Dashboard from "../../components/Dashboard.js";
 
 
 const useStyles = makeStyles(styles);
 
-export default function LandingPage(props) {
+const ProjectBoardPage = () => {
   const classes = useStyles();
-  const { ...rest } = props;
+  let { id } = useParams();   
+
   return (
-    <div>
+    <div className="mb-4">
       <Header
         color="transparent"
         brand="Personal Project Management"
@@ -39,23 +35,24 @@ export default function LandingPage(props) {
           height: 400,
           color: "white"
         }}
-        {...rest}
       />
       <Parallax filter image={image}>
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={6}>
-              <h1 className={classes.title + ' text-center'}>Project Dashboard</h1>
+              <h1 className={classes.title + ' text-center'}>Project Dashboard - {id}</h1>
             </GridItem>
           </GridContainer>
         </div>
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div className={classes.container}>
-          <Dashboard />
+          <ProjectBoard />
         </div>
       </div>
      
     </div>
   );
 }
+
+export default ProjectBoardPage;

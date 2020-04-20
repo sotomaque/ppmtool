@@ -11,7 +11,6 @@ const Dashboard = () => {
           <div className="col-md-12">
             <br />
             <Typography variant="h2" color="textPrimary" align="center">Projects</Typography>
-           
             <br />
             <div style={{display: 'flex', justifyContent: 'center'}}>
               <CreateProjectButton />
