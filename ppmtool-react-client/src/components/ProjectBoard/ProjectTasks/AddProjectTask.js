@@ -75,6 +75,17 @@ const AddProjectTask = () => {
     
     return (
         <div className={classes.section}>
+            <div style={{display: 'flex', justifyContent: 'center'}}>
+                <Button 
+                    size="large"
+                    variant="contained"
+                    color="secondary"
+                    className={classes.button}
+                    onClick={() => history.goBack()}
+                    >Go Back to Project Board</Button>
+            </div>
+            <hr />
+            <br/>
             <div className="row">
                 <div className="col-md-8 m-auto">
                     <Typography variant="h3" color="textPrimary">Enter Task Information</Typography>
@@ -94,6 +105,7 @@ const AddProjectTask = () => {
                         <br />
                         <br />
                         <br />
+
                         <TextField 
                             className="form-control form-control-lg" 
                             variant="outlined"
@@ -103,22 +115,43 @@ const AddProjectTask = () => {
                             value={acceptanceCriteria}
                             onChange={(event) => setAcceptanceCriteria(event.target.value)} 
                         />
+
+                        
+
                         <br />
                         <br />
                         <br />
-                        <TextField 
-                            className="form-control form-control-lg" 
-                            variant="outlined"
-                            multiline
-                            id="standard-basic" 
-                            label="Status" 
-                            name="status"
-                            value={status}
-                            onChange={(event) => setStatus(event.target.value)}
-                        />
+
+                        <div className="form-group">
+                            <select
+                                className="form-control form-control-lg"
+                                name="priority"
+                            >
+                                <option value={0}>Select Priority</option>
+                                <option value={1}>High</option>
+                                <option value={2}>Medium</option>
+                                <option value={3}>Low</option>
+                            </select>
+                        </div>
+                        
                         <br />
+            
+                        <div className="form-group">
+                            <select
+                                className="form-control form-control-lg"
+                                name="status" 
+                                onChange={(event) => setStatus(event.target.value)}
+                                value={status}
+                            >
+                                <option value="">Select Status</option>
+                                <option value="TO_DO">TO DO</option>
+                                <option value="IN_PROGRESS">IN PROGRESS</option>
+                                <option value="DONE">DONE</option>
+                            </select>
+                        </div>
+
                         <br />
-                        <br />
+      
                         <Typography variant="h6" color="textPrimary">Due Date</Typography>
                         <div className="form-group">
                             <input 
@@ -129,8 +162,10 @@ const AddProjectTask = () => {
                                 onChange={(event) => setDueDate(event.target.value)} 
                             />
                         </div>
+
                         <br />
                         <br />
+
                         <Button variant="contained" fullWidth={true} color="secondary" type="submit" onClick={(event) => handleSubmit(event)}>
                             Create
                         </Button>

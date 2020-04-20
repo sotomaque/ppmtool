@@ -19,6 +19,7 @@ import styles from "../../assets/js/landingPage.js";
 
 import image from "../../assets/img/dashboard.jpg";
 import HeaderLinksLeft from "../../components/Header/HeaderLinksLeft.js";
+import { Typography } from "@material-ui/core";
 
 
 const useStyles = makeStyles(styles);
@@ -37,14 +38,14 @@ const AddProjectTaskPage = () => {
         fixed
         changeColorOnScroll={{
           height: 400,
-          color: "white"
+          color: "dark"
         }}
       />
-      <Parallax filter image={image}>
+      <Parallax filter image={image} small>
         <div className={classes.container}>
-          <GridContainer>
+          <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={6}>
-              <h1 className={classes.title + ' text-center'}>Create a New Task for Project: {id}</h1>
+              <Typography variant="h2" align="center">Create a New Task for Project: {id} </Typography>
             </GridItem>
           </GridContainer>
         </div>

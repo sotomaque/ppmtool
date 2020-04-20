@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import styles from "../../assets/js/projectBoardStyle.js";
-import { Typography, Button } from '@material-ui/core';
+import { Typography, Button, CircularProgress } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles(styles);
@@ -18,6 +18,8 @@ const AddProject = () => {
     const [errorName, setErrorName] = React.useState('');
     const [errorDescription, setErrorDescription] = React.useState('');
     const [errorId, setErrorId] = React.useState('');
+
+    const [loading, setLoading] = React.useState(false);
     
     let history = useHistory();
 
@@ -61,7 +63,7 @@ const AddProject = () => {
         }
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
  
         const requestOptions = {
@@ -69,15 +71,40 @@ const AddProject = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(project)
         };
-        
-        fetch('http://www.localhost:8080/api/project', requestOptions)
+        setLoading(true);
+        await fetch('http://www.localhost:8080/api/project', requestOptions)
             .then(response => response.json())
             .then(data =>{ checkForErrors(data); console.dir(data) })
-        .catch((error) => console.error('Error: ', error));
+        .catch((error) => console.error('Error: ', error))
+        .finally(() => setLoading(false));
     }
+
+    if (loading) {
+        return (
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginTop: 50
+            }}>
+                <CircularProgress />
+            </div>
+        );
+    } 
 
     return (
         <div className={classes.section}>
+            <div style={{display: 'flex', justifyContent: 'center'}}>
+                <Button 
+                    size="large"
+                    variant="contained"
+                    color="secondary"
+                    className={classes.button}
+                    onClick={() => history.goBack()}
+                    >Go Back to Dashboard</Button>
+            </div>
+            <hr />
+            <br/>
             <div className="row">
                 <div className="col-md-8 m-auto">
                     <Typography variant="h3" color="textPrimary">Enter Project Information</Typography>

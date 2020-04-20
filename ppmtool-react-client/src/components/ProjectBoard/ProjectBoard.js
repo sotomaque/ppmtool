@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -89,8 +89,8 @@ const ProjectBoard = () => {
         <div className={classes.section}>
             <GridContainer justify="center">
                 <GridItem xs={12} sm={12} md={8}>
-                    <Typography variant="h2" color="textPrimary" align="center">{projectName}</Typography>
-                    <Typography variant="body1" color="textPrimary" align="center">{description}</Typography>
+                    <Typography variant="h3" color="textPrimary" align="center">{projectName}</Typography>
+                    <Typography variant="h4" color="textPrimary" align="center">{description}</Typography>
                 </GridItem>
             </GridContainer>
             <br/>
