@@ -15,7 +15,9 @@ import Parallax from "../../components/Parallax/Parallax.js";
 import AddProject from "../../components/Project/AddProject.js";
 
 import styles from "../../assets/js/landingPage.js";
+
 import image from "../../assets/img/dashboard.jpg";
+import HeaderLinksLeft from "../../components/Header/HeaderLinksLeft.js";
 
 
 const useStyles = makeStyles(styles);
@@ -29,6 +31,7 @@ const AddProjectPage = () => {
       <Header
         color="transparent"
         brand="Personal Project Management"
+        leftLinks={<HeaderLinksLeft />}
         rightLinks={<HeaderLinks />}
         fixed
         changeColorOnScroll={{

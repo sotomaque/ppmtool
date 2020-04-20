@@ -17,7 +17,7 @@ const CreateProjectTaskButton = () => {
 
 
     function handleAddClicked() {
-        history.push(`/addProjectTask/${id}`)
+        history.push(`/project/${id}/addTask`)
     }
 
     return (

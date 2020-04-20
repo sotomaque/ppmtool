@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 // core components
 import Header from "../../components/Header/Header.js";
+import HeaderLinksLeft from "../../components/Header/HeaderLinksLeft.js";
 // import Footer from "./components/Footer/Footer.js";
 import GridContainer from "../../components/Grid/GridContainer.js";
 import GridItem from "../../components/Grid/GridItem.js";
@@ -14,13 +15,9 @@ import Parallax from "../../components/Parallax/Parallax.js";
 
 import styles from "../../assets/js/landingPage.js";
 
-// Sections for this page
-// import ProductSection from "./Sections/ProductSection.js";
-// import TeamSection from "./Sections/TeamSection.js";
-// import WorkSection from "./Sections/WorkSection.js";
-
 import image from "../../assets/img/dashboard.jpg";
 import Dashboard from "../../components/Dashboard.js";
+
 
 
 const useStyles = makeStyles(styles);
@@ -33,6 +30,7 @@ export default function LandingPage(props) {
       <Header
         color="transparent"
         brand="Personal Project Management"
+        leftLinks={<HeaderLinksLeft />}
         rightLinks={<HeaderLinks />}
         fixed
         changeColorOnScroll={{

@@ -154,6 +154,7 @@ const ProjectItem = () => {
                       className={classes.button}
                       startIcon={<Launch />}
                       onClick={() => history.push(`/project/${project.projectIdentifier}`)}
+                      fullWidth={true}
                     >
                       Launch
                     </Button>  
@@ -164,6 +165,7 @@ const ProjectItem = () => {
                       className={classes.button}
                       startIcon={<DeleteIcon />}
                       onClick={() => showAlert(project.projectIdentifier)}
+                      fullWidth={true}
                     >
                       Delete
                     </Button>  
@@ -174,8 +176,9 @@ const ProjectItem = () => {
                       className={classes.button}
                       startIcon={<Update />}
                       onClick={() => handleUpdateClicked(project.projectIdentifier)}
+                      fullWidth={true}
                     >
-                      Update
+                      Edit
                     </Button>
                   </div>
                   {/** End of Proj Actions **/}

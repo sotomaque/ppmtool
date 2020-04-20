@@ -5,7 +5,6 @@ import styles from "../../assets/js/projectBoardStyle.js";
 import { Typography, Button } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 
-
 const useStyles = makeStyles(styles);
 
 const AddProject = () => {
@@ -19,8 +18,6 @@ const AddProject = () => {
     const [errorName, setErrorName] = React.useState('');
     const [errorDescription, setErrorDescription] = React.useState('');
     const [errorId, setErrorId] = React.useState('');
-
-    const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
     
     let history = useHistory();
 
@@ -79,20 +76,16 @@ const AddProject = () => {
         .catch((error) => console.error('Error: ', error));
     }
 
-    const handleDateChange = (date) => {
-        setSelectedDate(date);
-    };
-
     return (
         <div className={classes.section}>
             <div className="row">
                 <div className="col-md-8 m-auto">
                     <Typography variant="h3" color="textPrimary">Enter Project Information</Typography>
                     <hr />
-           
                     <form className={classes.root} noValidate autoComplete="off">
                         <TextField 
                             className="form-control form-control-lg" 
+                            required
                             error={errorName}
                             helperText={errorName}
                             variant="outlined"
@@ -107,6 +100,7 @@ const AddProject = () => {
                         <br />
                         <TextField 
                             className="form-control form-control-lg" 
+                            required
                             error={errorId}
                             helperText={errorId}
                             variant="outlined"
@@ -121,6 +115,7 @@ const AddProject = () => {
                         <br />
                         <TextField 
                             className="form-control form-control-lg" 
+                            required
                             error={errorDescription}
                             helperText={errorDescription}
                             variant="outlined"
@@ -154,10 +149,8 @@ const AddProject = () => {
                                 onChange={(event) => setEndDate(event.target.value)} 
                             />
                         </div>
-                        
                         <br />
                         <br />
-
                         <Button variant="contained" fullWidth={true} color="secondary" type="submit" onClick={(event) => handleSubmit(event)}>
                             Create
                         </Button>

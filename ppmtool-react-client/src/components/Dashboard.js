@@ -14,14 +14,10 @@ const Dashboard = () => {
             <br />
             <div style={{display: 'flex', justifyContent: 'center'}}>
               <CreateProjectButton />
-            </div>
-            
-            
+            </div>            
             <br />
             <hr />
-            
             <ProjectItem />
-            
           </div>
         </div>
       </div>

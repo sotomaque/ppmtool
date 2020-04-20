@@ -7,7 +7,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 
 // @material-ui/icons
-import { Dashboard, PersonAdd, Input } from "@material-ui/icons";
+import { PersonAdd, Input } from "@material-ui/icons";
 
 import styles from "../../assets/js/headerLinksStyle.js";
 
@@ -34,16 +34,6 @@ export default function HeaderLinks(props) {
 
   return (
     <List className={classes.list}>      
-      <ListItem className={classes.listItem}>
-        <Link
-          to="/dashboard"
-          color="transparent"
-          className={classes.navLink}
-        >
-          <Dashboard className={classes.icons} /> Dashboard
-        </Link>
-      </ListItem>
-
       <ListItem className={classes.listItem + ' ' + `${loginSelected ? classes.active : ""}`}>
         <Link
           to="/login"
@@ -53,7 +43,6 @@ export default function HeaderLinks(props) {
           <Input className={classes.icons} /> Login
         </Link>
       </ListItem>
-
       <ListItem className={classes.listItem + ' ' + `${signupSelected ? classes.active : ""}`}>
         <Link
           to="/signup"
@@ -62,10 +51,7 @@ export default function HeaderLinks(props) {
         >
           <PersonAdd className={classes.icons} /> Sign Up
         </Link>
-      </ListItem>
-     
-     
-     
+      </ListItem>     
     </List>
   );
 }
