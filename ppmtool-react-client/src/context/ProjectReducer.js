@@ -6,6 +6,18 @@ export default (state, action) => {
                 ...state,
                 projects: action.payload
             }
+        
+        case 'SET_PROJECT':
+            return {
+                ...state,
+                selectedProject: action.payload
+            }
+
+        case 'SET_BACKLOG':
+            return {
+                ...state,
+                backlog: action.payload
+            } 
 
         case 'SENDING_REQUEST':
             return {

@@ -7,7 +7,7 @@ import LandingPage from './pages/LandingPage/LandingPage';
 import DashboardPage from './pages/DashboardPage/DashboardPage';
 
 import AddProjectPage from './pages/AddProjectPage/AddProjectPage';
-import EditProject from './components/Project/EditProject';
+import EditProjectPage from './pages/EditProjectPage/EditProjectPage';
 
 import ProjectBoardPage from './pages/ProjectBoardPage/ProjectBoardPage';
 import AddProjectTaskPage from './pages/AddProjectTaskPage/AddProjectTaskPage';
@@ -29,7 +29,7 @@ function App() {
           <Route exact path="/dashboard" component={DashboardPage} />
 
           <Route path="/addProject" component={AddProjectPage} />
-          <Route path="/editProject/:id" component={EditProject} />
+          <Route path="/editProject/:id" component={EditProjectPage} />
 
           <Route exact path="/project/:id" component={ProjectBoardPage} />
           <Route path="/project/:id/addTask" component={AddProjectTaskPage} />

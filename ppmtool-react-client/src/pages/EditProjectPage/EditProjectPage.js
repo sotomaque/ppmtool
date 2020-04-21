@@ -17,16 +17,17 @@ import styles from "../../assets/js/landingPage.js";
 import image from "../../assets/img/dashboard.jpg";
 import HeaderLinksLeft from "../../components/Header/HeaderLinksLeft.js";
 import EditProject from "../../components/Project/EditProject.js";
+import { Typography } from "@material-ui/core";
 
 
 const useStyles = makeStyles(styles);
 
-const EditProjectPage = () => {
+const EditProjectPage = (props) => {
   const classes = useStyles();
-  let { id } = useParams();   
-
+  const { id } = useParams();   
+  const { ...rest } = props;
   return (
-    <div className="mb-4">
+    <div>
       <Header
         color="transparent"
         brand="Personal Project Management"
@@ -35,14 +36,15 @@ const EditProjectPage = () => {
         fixed
         changeColorOnScroll={{
           height: 400,
-          color: "white"
+          color: "dark"
         }}
+        {...rest}
       />
-      <Parallax filter image={image}>
+      <Parallax filter image={image} small>
         <div className={classes.container}>
-          <GridContainer>
+          <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={6}>
-              <h1 className={classes.title + ' text-center'}>Edit Project: {id}</h1>
+              <Typography variant="h2" align="center">Edit Project: {id} </Typography>
             </GridItem>
           </GridContainer>
         </div>
@@ -52,7 +54,6 @@ const EditProjectPage = () => {
           <EditProject />
         </div>
       </div>
-     
     </div>
   );
 }

@@ -25,7 +25,7 @@ const useStyles = makeStyles(styles);
 
 const AddProjectPage = (props) => {
   const classes = useStyles();
-  let { id } = useParams();   
+  const { id } = useParams();   
   const { ...rest } = props;
   return (
     <div>
@@ -55,7 +55,6 @@ const AddProjectPage = (props) => {
           <AddProject />
         </div>
       </div>
-     
     </div>
   );
 }

@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
+
+import ProjectContext from '../../context/ProjectContext';
 
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,63 +16,22 @@ const useStyles = makeStyles(styles);
 
 const ProjectBoard = () => {
     const classes = useStyles();
-    let { id } = useParams();   
 
-    const [loading, setLoading] = React.useState(false);
+    const { id } = useParams();   
+
+    const projectContext = useContext(ProjectContext);
+    const { selectedProject, backlog, getProjectById, getBacklogForProject, loading } = projectContext;
+
     const [error, setError] = React.useState('');
 
-    const [pid, setPid] = React.useState('');
-    const [projectName, setProjectName] = React.useState('');
-    const [projectIdentifier, setProjectIdentifier] = React.useState('');
-    const [description, setDescription] = React.useState('');
-    const [start_date, setStartDate] = React.useState('');
-    const [end_date, setEndDate] = React.useState('');
-
-
-    function setProjectValues(response) {
-        // required fields
-        setPid(response.id);
-        setProjectName(response.projectName);
-        setProjectIdentifier(response.projectIdentifier);
-        setDescription(response.description);
-
-        // optional fields
-        if (response.start_date) {
-            setStartDate(response.start_date);
-        }
-        if (response.end_date) {
-            setEndDate(response.end_date);
-        }
-    }
-
-    const getProjectDetails = async() => {
-        setLoading(true);
-        await fetch(`http://www.localhost:8080/api/project/${id}`)
-            .then(res => res.json())
-            .then(data => setProjectValues(data))
-        .catch((error) => {
-            setError(error);
-            setLoading(false);
-            console.error(error)
-        });
-    }
-
-    const getBackloadForProject = async() => {
-        await fetch(`http://www.localhost:8080/api/backlog/${id}`)
-            .then(res => res.json())
-            .then(data => console.dir(data))
-            .then(() => setLoading(false))
-        .catch((error) => {
-            setError(error);
-            setLoading(false);
-            console.error(error)
-        });
-    }
 
     useEffect(() => {
-        getProjectDetails();
-        getBackloadForProject();
+        getProjectById(id);
+        getBacklogForProject(id);
     }, [])
+
+    console.log('selected project: ', selectedProject);
+    console.log('backlog for project: ', backlog)
 
     if (loading) {
         return (
@@ -89,8 +50,8 @@ const ProjectBoard = () => {
         <div className={classes.section}>
             <GridContainer justify="center">
                 <GridItem xs={12} sm={12} md={8}>
-                    <Typography variant="h3" color="textPrimary" align="center">{projectName}</Typography>
-                    <Typography variant="h4" color="textPrimary" align="center">{description}</Typography>
+                    <Typography variant="h3" color="textPrimary" align="center">{selectedProject.projectName}</Typography>
+                    <Typography variant="h4" color="textPrimary" align="center">{selectedProject.description}</Typography>
                 </GridItem>
             </GridContainer>
             <br/>

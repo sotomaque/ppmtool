@@ -63,7 +63,7 @@ const EditProject = () => {
         }
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
 
         // pre-process 
@@ -78,11 +78,11 @@ const EditProject = () => {
 
         setLoading(true);
 
-        fetch('http://www.localhost:8080/api/project', requestOptions)
+        await fetch('http://www.localhost:8080/api/project', requestOptions)
             .then(response => response.json())
             .then(data => checkForErrors(data))
-            .then(setLoading(false))
-        .catch((error) => console.error('Error: ', error));
+        .catch((error) => console.error('Error: ', error))
+        .finally(() => setLoading(false));
     }
 
     function setProjectValues(response) {
@@ -102,13 +102,13 @@ const EditProject = () => {
         }
     }
 
-    function getProjectDetails() {
+    async function getProjectDetails() {
         setLoading(true);
-        fetch(`http://www.localhost:8080/api/project/${id}`)
+        await fetch(`http://www.localhost:8080/api/project/${id}`)
             .then(res => res.json())
             .then(data => setProjectValues(data))
-            .then(setLoading(false))
-        .catch((error) => console.error(error));
+        .catch((error) => console.error(error))
+        .finally(() => setLoading(false));
     }
 
     useEffect(() => {
@@ -130,84 +130,112 @@ const EditProject = () => {
     } 
 
     return (
-        <div className={classes.section}>
-            <div className="row">
-                <div className="col-md-8 m-auto">
-                    <Typography variant="h3" color="textPrimary">Enter Project Information</Typography>
-                    <hr />
-                    <form className={classes.root} noValidate autoComplete="off">
-                        <TextField 
-                            className="form-control form-control-lg" 
-                            required
-                            error={errorName}
-                            helperText={errorName}
-                            variant="outlined"
-                            id="standard-basic" 
-                            label="Project Name" 
-                            name="projectName"
-                            value={projectName}
-                            onChange={(event) => setProjectName(event.target.value)}
-                        />
-                        <br />
-                        <br />
-                        <br />
-                        <TextField 
-                            className="form-control form-control-lg" 
-                            disabled
-                            error={errorId}
-                            helperText={errorId}
-                            variant="outlined"
-                            id="standard-basic" 
-                            label="Unique Project ID" 
-                            name="projectIdentifier"
-                            value={projectIdentifier}
-                            onChange={(event) => setProjectIdentifier(event.target.value)} 
-                        />
-                        <br />
-                        <br />
-                        <br />
-                        <TextField 
-                            className="form-control form-control-lg" 
-                            required
-                            error={errorDescription}
-                            helperText={errorDescription}
-                            variant="outlined"
-                            multiline
-                            id="standard-basic" 
-                            label="Project Description" 
-                            name="description"
-                            value={description}
-                            onChange={(event) => setDescription(event.target.value)}
-                        />
-                        <br />
-                        <br />
-                        <br />
-                        <Typography variant="h6" color="textPrimary">Start Date</Typography>
-                        <div className="form-group">
-                            <input 
-                                type="date" 
-                                className="form-control form-control-lg" 
-                                name="start_date" 
+        <div className="pt-4 mb-4">
+            <div className={classes.section}>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                    <Button
+                        size="large"
+                        variant="contained"
+                        color="secondary"
+                        className={classes.button}
+                        onClick={() => history.goBack()}
+                    >
+                        Go Back to Dashboard
+                    </Button>
+                </div>
+                <hr />
+                <br />
+                <div className="row">
+                    <div className="col-md-8 m-auto">
+                        <Typography variant="h3" color="textPrimary">
+                        Enter Project Information
+                        </Typography>
+                        <hr />
+                        <form className={classes.root} noValidate autoComplete="off">
+                            <TextField
+                                className="form-control form-control-lg"
+                                required
+                                error={errorName ? true : false}
+                                helperText={errorName}
+                                variant="outlined"
+                                id="standard-basic"
+                                label="Project Name"
+                                name="projectName"
+                                value={projectName}
+                                onChange={(event) => setProjectName(event.target.value)}
+                            />
+                            <br />
+                            <br />
+                            <br />
+                            <TextField
+                                className="form-control form-control-lg"
+                                required
+                                error={errorId ? true : false}
+                                helperText={errorId}
+                                variant="outlined"
+                                id="standard-basic"
+                                label="Unique Project ID"
+                                disabled
+                                name="projectIdentifier"
+                                value={projectIdentifier}
+                                onChange={(event) => setProjectIdentifier(event.target.value)}
+                            />
+                            <br />
+                            <br />
+                            <br />
+                            <TextField
+                                className="form-control form-control-lg"
+                                required
+                                error={errorDescription ? true : false}
+                                helperText={errorDescription}
+                                variant="outlined"
+                                multiline
+                                id="standard-basic"
+                                label="Project Description"
+                                name="description"
+                                value={description}
+                                onChange={(event) => setDescription(event.target.value)}
+                            />
+                            <br />
+                            <br />
+                            <br />
+                            <Typography variant="h6" color="textPrimary">
+                                Start Date
+                            </Typography>
+                            <div className="form-group">
+                                <input
+                                type="date"
+                                className="form-control form-control-lg"
+                                name="start_date"
                                 value={start_date}
-                                onChange={(event) => setStartDate(event.target.value)} 
-                            />
-                        </div>
-                        <Typography variant="h6" color="textPrimary">Estimated End Date</Typography>
-                        <div className="form-group">
-                            <input 
-                                type="date" 
-                                className="form-control form-control-lg" 
-                                name="end_date" 
+                                onChange={(event) => setStartDate(event.target.value)}
+                                />
+                            </div>
+                            <Typography variant="h6" color="textPrimary">
+                                Estimated End Date
+                            </Typography>
+                            <div className="form-group">
+                                <input
+                                type="date"
+                                className="form-control form-control-lg"
+                                name="end_date"
                                 value={end_date}
-                                onChange={(event) => setEndDate(event.target.value)} 
-                            />
-                        </div>
-                        <br />
-                        <br />
-                        <Button variant="contained" fullWidth={true} color="secondary" type="submit" onClick={(event) => handleSubmit(event)}>
-                            Update
-                        </Button>
-                    </form>
+                                onChange={(event) => setEndDate(event.target.value)}
+                                />
+                            </div>
+                            <br />
+                            <br />
+                            <Button
+                                variant="contained"
+                                fullWidth={true}
+                                color="secondary"
+                                type="submit"
+                                onClick={(event) => handleSubmit(event)}
+                            >
+                                Update
+                            </Button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

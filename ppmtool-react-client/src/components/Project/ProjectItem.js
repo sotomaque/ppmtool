@@ -23,11 +23,13 @@ const useStyles = makeStyles((theme) => ({
 
 const ProjectItem = () => {
   const classes = useStyles();
-  let history = useHistory();
+
+  const history = useHistory();
   const location = useLocation();
 
   const projectContext = useContext(ProjectContext);
   const { getProjects, deleteProject, projects, loading } = projectContext;
+  
   const [refetchData, setRefetchData] = React.useState(false);
 
   const [showSuccessDeleteAlert, setShowSuccessDeleteAlert] = React.useState(false);

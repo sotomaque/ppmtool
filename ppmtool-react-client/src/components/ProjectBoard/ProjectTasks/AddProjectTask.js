@@ -14,10 +14,17 @@ const AddProjectTask = () => {
   let { id } = useParams();
 
   const [summary, setSummary] = React.useState("");
+  const [errorSummary, setErrorSummary] = React.useState("");
+
   const [acceptanceCriteria, setAcceptanceCriteria] = React.useState("");
+  const [errorAcceptanceCriteria, setErrorAcceptanceCriteria] = React.useState("");
+
   const [status, setStatus] = React.useState("");
+  const [errorStatus, setErrorStatus] = React.useState("");
+
   const [priority, setPriority] = React.useState("");
   const [dueDate, setDueDate] = React.useState("");
+
 
   const [loading, setLoading] = React.useState(false);
 
@@ -39,6 +46,18 @@ const AddProjectTask = () => {
       });
     } else {
       console.error("error postiting task ", response);
+
+      if (response.summary) {
+        setErrorSummary(response.summary);
+      } else {
+        setErrorSummary("");
+      }
+
+      if (response.acceptanceCriteria) {
+        setErrorAcceptanceCriteria(response.acceptanceCriteria);
+      } else {
+        setErrorAcceptanceCriteria("");
+      }
     }
   }
 
@@ -103,6 +122,8 @@ const AddProjectTask = () => {
               <TextField
                 className="form-control form-control-lg"
                 required
+                error={errorSummary ? true : false}
+                helperText={errorSummary}
                 variant="outlined"
                 multiline
                 id="standard-basic"
@@ -117,6 +138,8 @@ const AddProjectTask = () => {
 
               <TextField
                 className="form-control form-control-lg"
+                error={errorAcceptanceCriteria ? true : false}
+                helperText={errorAcceptanceCriteria}
                 variant="outlined"
                 id="standard-basic"
                 label="Acceptance Criteria"
@@ -133,6 +156,8 @@ const AddProjectTask = () => {
                 <select
                   className="form-control form-control-lg"
                   name="priority"
+                  onChange={(event) => setPriority(event.target.value)}
+                  value={priority}
                 >
                   <option value={0}>Select Priority</option>
                   <option value={1}>High</option>
