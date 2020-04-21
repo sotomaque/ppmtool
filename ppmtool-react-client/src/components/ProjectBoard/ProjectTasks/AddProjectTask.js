@@ -20,7 +20,6 @@ const AddProjectTask = () => {
   const [errorAcceptanceCriteria, setErrorAcceptanceCriteria] = React.useState("");
 
   const [status, setStatus] = React.useState("");
-  const [errorStatus, setErrorStatus] = React.useState("");
 
   const [priority, setPriority] = React.useState("");
   const [dueDate, setDueDate] = React.useState("");
