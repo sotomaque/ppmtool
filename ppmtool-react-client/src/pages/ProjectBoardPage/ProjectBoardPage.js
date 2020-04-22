@@ -18,9 +18,10 @@ import ProjectBoard from "../../components/ProjectBoard/ProjectBoard.js";
 
 import styles from "../../assets/js/landingPage.js";
 import image from "../../assets/img/dashboard.jpg";
-import { Typography, Button } from "@material-ui/core";
+import { Typography, Button, CircularProgress } from "@material-ui/core";
 
 import { connect } from 'react-redux';
+import { clearErrors } from '../../actions/errorActions';
 
 const useStyles = makeStyles(styles);
 
@@ -29,6 +30,17 @@ const ProjectBoardPage = (props) => {
   const classes = useStyles();
   let { id } = useParams();   
   const history = useHistory();
+
+  const [error, setError] = React.useState('');
+
+  React.useEffect(() => {
+    console.log('here')
+    if (props.errors.projectIdentifier) {
+      console.log('here2')
+      setError(props.errors.projectIdentifier);
+    } 
+  }, [props])
+
 
   return (
     <div className="mb-4">
@@ -51,7 +63,7 @@ const ProjectBoardPage = (props) => {
               !props.errors.projectIdentifier ? (
                 <Typography variant="h2" align="center">Dashboard for Project: {id} </Typography>
               ) : (
-                <Typography variant="h2" align="center">{props.errors.projectIdentifier}</Typography>
+                <Typography variant="h2" align="center">{error}</Typography>
               )
             }
             </GridItem>
@@ -72,7 +84,10 @@ const ProjectBoardPage = (props) => {
                     variant="contained"
                     color="secondary"
                     className={classes.button}
-                    onClick={() => history.push('/dashboard')}
+                    onClick={() => {
+                      props.clearErrors()
+                      history.push('/dashboard')}
+                    }
                   >
                     Go Back to Dashboard
                   </Button>
@@ -94,4 +109,4 @@ const mapStateToProps = (state) => ({
   errors: state.errors
 });
 
-export default  connect(mapStateToProps, {} )(ProjectBoardPage);
+export default  connect(mapStateToProps, {clearErrors} )(ProjectBoardPage);

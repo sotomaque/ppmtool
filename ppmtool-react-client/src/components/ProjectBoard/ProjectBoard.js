@@ -64,7 +64,7 @@ const ProjectBoard = (props) => {
         showAlert();
     }
 
-    
+
     
     return (
         <div className={classes.section}>
@@ -89,7 +89,8 @@ const ProjectBoard = (props) => {
 
 const mapStateToProps = (state) => ({
   backlog: state.backlog,
-  project: state.project
+  project: state.project,
+  errors: state.errors
 });
 
 export default connect(mapStateToProps, { getBacklog, getProjectById })(ProjectBoard);
