@@ -1,24 +1,18 @@
-import React, { useContext, useEffect } from 'react';
-import ProjectContext from '../../context/ProjectContext';
+import React from 'react';
 
-import ProjectTask from './ProjectTasks/ProjectTask';
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography, Button } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete'
+import Edit from "@material-ui/icons/Edit";
+
+const useStyles = makeStyles((theme) => ({
+    button: {
+      margin: theme.spacing(1),
+    },
+}));
 
 const Backlog = () => {
-
-    const projectContext = useContext(ProjectContext);
-    const { backlog } = projectContext;
-
-    useEffect(() => {
-        console.log(backlog)
-    }, [backlog]) 
-
-    function isEmpty(obj) {
-        for(var key in obj) {
-            if(obj.hasOwnProperty(key))
-                return false;
-        }
-        return true;
-    }
+    const classes = useStyles();
 
     return (
         <div className="row">
@@ -28,15 +22,44 @@ const Backlog = () => {
                 <div className="card-header bg-secondary text-white">
                     <h3>TO DO</h3>
                 </div>
-                {
-                    !isEmpty(backlog) && backlog.map(task => {
-                        return (
-                            <React.Fragment key={task.id}>
-                                <ProjectTask key={task.id} task={task} />
-                                <br />
-                            </React.Fragment>)
-                    })
-                }
+                <div className="card mb-1 bg-light">
+                    <div className="card-header">
+                        <Typography variant="body1" color="textPrimary">ID: task.projectSequence</Typography>
+                    </div>
+                    <div className="card-body bg-light">
+                        <div>
+                            <Typography variant="caption" color="textPrimary">task.summary</Typography>
+                        </div>
+                        <br />
+                        {/** 
+                            task.acceptanceCriteria && (
+                                <span className="card-text text-truncate ">
+                                    <Typography variant="body2" color="textPrimary">task.acceptanceCriteria</Typography>
+                                </span>
+                            )
+                         */}
+                         <Button
+                            variant="contained"
+                            color="default"
+                            className={classes.button}
+                            startIcon={<Edit />}
+                            onClick={() => console.log('update clicked')}
+                            
+                        >
+                            Edit
+                        </Button>
+
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            className={classes.button}
+                            startIcon={<DeleteIcon />}
+                            onClick={() => console.log('clicked')}
+                            >
+                            Delete
+                        </Button> 
+                    </div>
+                </div>
             </div>
         </div>
 

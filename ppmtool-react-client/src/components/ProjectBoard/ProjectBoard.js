@@ -1,8 +1,6 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 
-import ProjectContext from '../../context/ProjectContext';
-
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Backlog from './Backlog';
@@ -10,43 +8,59 @@ import GridContainer from "../../components/Grid/GridContainer.js";
 import GridItem from "../../components/Grid/GridItem.js";
 
 import styles from "../../assets/js/projectBoardStyle.js";
-import { CircularProgress, Typography } from "@material-ui/core";
+import { Typography, Button } from "@material-ui/core";
 import CreateProjectTaskButton from "./CreateProjectTaskButton.js";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
 
 const useStyles = makeStyles(styles);
 
 const ProjectBoard = () => {
     const classes = useStyles();
+    const location = useLocation();
 
-    const { id } = useParams();   
+    const [showSuccessAddedAlert, setShowSuccessAddedAlert] = React.useState(false);
 
-    const projectContext = useContext(ProjectContext);
-    const { selectedProject, backlog, getProjectById, getBacklogForProject, loading } = projectContext;
+    function showSuccessAdded() {
+        if (location.showSuccessAlert) {
+          setShowSuccessAddedAlert(true);
+        } 
+    }
 
-    useEffect(() => {
-        getProjectById(id);
-        getBacklogForProject(id);
-    }, [])
+    React.useEffect(() => {
+        showSuccessAdded();
+      }, [location]);
 
-    if (loading) {
-        return (
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                marginTop: 50
-            }}>
-                <CircularProgress />
-            </div>
-        );
-    } 
+    function showAlert() {
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <div className='custom-ui'>
+                <h1>Success!</h1>
+                <p>The Task Has Been Successfully Added</p>
+                <Button className="float-center" variant="contained" color="secondary" onClick={() => {
+                  setShowSuccessAddedAlert(false);
+                  onClose();
+                }}>
+                  Ok
+                </Button>
+              </div>
+            );
+          }
+        })
+      }
+
+    if (showSuccessAddedAlert) {
+        showAlert();
+    }
     
     return (
         <div className={classes.section}>
             <GridContainer justify="center">
                 <GridItem xs={12} sm={12} md={8}>
-                    <Typography variant="h3" color="textPrimary" align="center">{selectedProject.projectName}</Typography>
-                    <Typography variant="h4" color="textPrimary" align="center">{selectedProject.description}</Typography>
+                    <Typography variant="h3" color="textPrimary" align="center">selectedProject.projectName</Typography>
+                    <Typography variant="h4" color="textPrimary" align="center">selectedProject.description</Typography>
                 </GridItem>
             </GridContainer>
             <br/>
@@ -56,7 +70,7 @@ const ProjectBoard = () => {
             <hr />
             <br/>
             {
-                backlog && <Backlog />
+                <Backlog />
             }
             
         </div>

@@ -22,7 +22,7 @@ import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles(styles);
 
-export default function LandingPage(props) {
+function DashboardPage(props) {
   const classes = useStyles();
   const { ...rest } = props;
   return (
@@ -56,3 +56,5 @@ export default function LandingPage(props) {
     </div>
   );
 }
+
+export default DashboardPage;

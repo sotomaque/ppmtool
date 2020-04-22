@@ -5,10 +5,21 @@ import styles from "../assets/js/projectBoardStyle.js";
 
 import CreateProjectButton from "./Project/CreateProjectButton";
 
+import { connect } from 'react-redux';
+import { getProjects } from '../actions/projectActions';
+
+
 const useStyles = makeStyles(styles);
 
-const Dashboard = () => {
+const Dashboard = (props) => {
   const classes = useStyles();
+
+  React.useEffect(() => {
+    props.getProjects();
+  }, [])
+
+  const projects = props.project.projects;
+
   return (
     <div className="pt-4 mb-4">
       <div className={classes.section}>
@@ -18,11 +29,19 @@ const Dashboard = () => {
         <hr />
         <br />
         <div className="row">
-          <ProjectItem />
+          {
+            projects && projects.map((project) => (
+                <ProjectItem project={project} key={project.id}/>
+            ))
+          }
         </div>
       </div>
     </div>
   );
 };
 
-export default Dashboard;
+const mapStateToProps = (state) => ({
+  project: state.project
+})
+
+export default connect(mapStateToProps, {getProjects})(Dashboard);

@@ -1,4 +1,5 @@
 export default (state, action) => {
+
     switch(action.type) {
 
         case 'SET_PROJECTS':
@@ -30,10 +31,14 @@ export default (state, action) => {
                 ...state,
                 loading: false
             }
-            
-        
+
+        case 'DELETED_SUCCESSFULLY':
+            return {
+                ...state
+            }
 
         default:
             throw new Error;
     }
+    
 }

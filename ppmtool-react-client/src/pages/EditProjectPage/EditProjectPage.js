@@ -25,7 +25,7 @@ const useStyles = makeStyles(styles);
 const EditProjectPage = (props) => {
   const classes = useStyles();
   const { id } = useParams();   
-  const { ...rest } = props;
+
   return (
     <div>
       <Header
@@ -38,7 +38,7 @@ const EditProjectPage = (props) => {
           height: 400,
           color: "dark"
         }}
-        {...rest}
+
       />
       <Parallax filter image={image} small>
         <div className={classes.container}>

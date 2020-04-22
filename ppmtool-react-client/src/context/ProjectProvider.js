@@ -7,7 +7,7 @@ const ProjectProvider = (props) => {
     const initialState = {
         projects: [],
         selectedProject: {},
-        backlog: {},
+        backlog: [],
         loading: true
     }
 
@@ -50,7 +50,23 @@ const ProjectProvider = (props) => {
             };
             dispatch({ type: 'SENDING_REQUEST' });
             await fetch(`http://www.localhost:8080/api/project/${id}`, requestOptions);
+            dispatch({ type: 'DELETED_SUCCESSFULLY' });
             dispatch({ type: 'REQUEST_FINISHED' });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    const deleteTask = async (project_id, task_id) => {
+        try {
+            const requestOptions = {
+                method: 'DELETE'
+            };
+            dispatch({ type: 'SENDING_REQUEST' });
+            await fetch(`http://www.localhost:8080/api/backlog/${project_id}/${task_id}`, requestOptions);
+            dispatch({ type: 'DELETED_SUCCESSFULLY' });
+            dispatch({ type: 'REQUEST_FINISHED' });
+            
         } catch (e) {
             console.error(e);
         }
@@ -81,7 +97,8 @@ const ProjectProvider = (props) => {
             getProjects,
             getProjectById,
             getBacklogForProject,
-            deleteProject
+            deleteProject,
+            deleteTask
         }} >
             {props.children}
         </ProjectContext.Provider>

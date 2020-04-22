@@ -7,9 +7,13 @@ import TextField from "@material-ui/core/TextField";
 
 import styles from "../../../assets/js/projectBoardStyle.js";
 
+import { connect } from 'react-redux';
+import { createProjectTask } from '../../../actions/backlogActions';
+
+
 const useStyles = makeStyles(styles);
 
-const AddProjectTask = () => {
+const AddProjectTask = (props) => {
   const classes = useStyles();
   let { id } = useParams();
 
@@ -24,9 +28,6 @@ const AddProjectTask = () => {
   const [priority, setPriority] = React.useState("");
   const [dueDate, setDueDate] = React.useState("");
 
-
-  const [loading, setLoading] = React.useState(false);
-
   let history = useHistory();
 
   const projectTask = {
@@ -37,64 +38,15 @@ const AddProjectTask = () => {
     dueDate,
   };
 
-  function checkForErrors(response) {
-    if (response.id) {
-      history.push({
-        pathname: `/project/${id}`,
-        showSuccessAlert: true,
-      });
-    } else {
-      console.error("error postiting task ", response);
+  React.useEffect(() => {
+    console.log('in here')
+  }, [props])
 
-      if (response.summary) {
-        setErrorSummary(response.summary);
-      } else {
-        setErrorSummary("");
-      }
-
-      if (response.acceptanceCriteria) {
-        setErrorAcceptanceCriteria(response.acceptanceCriteria);
-      } else {
-        setErrorAcceptanceCriteria("");
-      }
-    }
-  }
-
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
-
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(projectTask),
-    };
-
-    setLoading(true);
-    await fetch(`http://www.localhost:8080/api/backlog/${id}`, requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        checkForErrors(data);
-        console.dir(data);
-      })
-      .catch((error) => console.error("Error: ", error))
-      .finally(() => setLoading(false));
+    props.createProjectTask(id, projectTask, history);
   }
-
-  if (loading) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          marginTop: 50,
-        }}
-      >
-        <CircularProgress />
-      </div>
-    );
-  }
-
+  
   return (
     <div className="pt-4 mb-4">
       <div className={classes.section}>
@@ -216,4 +168,9 @@ const AddProjectTask = () => {
   );
 };
 
-export default AddProjectTask;
+const mapStateToProps = (state) => ({
+
+})
+
+
+export default connect( null, {createProjectTask} )(AddProjectTask);

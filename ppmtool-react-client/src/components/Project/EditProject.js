@@ -4,9 +4,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import styles from "../../assets/js/projectBoardStyle.js";
 import { Typography, TextField, Button, CircularProgress } from '@material-ui/core';
 
+
+import { connect } from 'react-redux';
+import { getProjectById, createProject } from '../../actions/projectActions';
+
 const useStyles = makeStyles(styles);
 
-const EditProject = () => {
+const EditProject = (props) => {
     const classes = useStyles();
     let { id } = useParams();
     const [pid, setPid] = React.useState('');
@@ -16,105 +20,96 @@ const EditProject = () => {
     const [start_date, setStartDate] = React.useState('');
     const [end_date, setEndDate] = React.useState('');
 
-    const [loading, setLoading] = React.useState(false);
+    const [loading, setLoading] = React.useState(true);
+
     const [errorName, setErrorName] = React.useState('');
-    const [errorDescription, setErrorDescription] = React.useState('');
     const [errorId, setErrorId] = React.useState('');
+    const [errorDescription, setErrorDescription] = React.useState("");
     
+    const [refetch, setRefetch] = React.useState(true);
+
     let history = useHistory();
 
+    useEffect(() => {
+        console.log('hi')
+        // fetching project details
+        props.getProjectById(id, history);   
+        if (!isEmpty(props.project) && refetch )  {
+            setProjectAttributes(props.project); 
+            console.log(props.project)
+            if (props.project.id) {
+                setRefetch(false);
+                setLoading(false);
+            }
+        }
+
+        // error handling 
+        if (props.errors) {
+            let errors = props.errors;
+            setErrorMessages(errors);
+        } else {
+            setErrorName("");
+            setErrorId("");
+            setErrorDescription("");
+        }
+    
+    }, [props]);
+
+    function setErrorMessages(errorResponse) {
+        if (errorResponse?.description) {
+          setErrorDescription(errorResponse.description);
+        } else {
+          setErrorDescription("");
+        }
+        if (errorResponse?.projectName) {
+          setErrorName(errorResponse.projectName);
+        } else {
+          setErrorName("");
+        }
+        if (errorResponse?.projectIdentifier) {
+          setErrorId(errorResponse.projectIdentifier);
+        } else {
+          setErrorId("");
+        }
+    }
+
     const project = {
-        id: pid,
+        id: pid, 
         projectName,
         projectIdentifier,
         description,
         start_date,
-        end_date
+        end_date,
+    };
+
+    function handleSubmit(e) {
+        e.preventDefault();   
+        const projectClone = {...project}
+        setPid('');
+        setProjectName('');
+        props.createProject(projectClone, history);
     }
 
-    function checkForErrors(response) {
-        if (response.id) {
-            setErrorDescription('');
-            setErrorName('');
-            setErrorId('');
-            // show modal saying project was successfully added
-            // click anywhere to close and go back to dashboard
-            history.push('/dashboard');
-        } else {
-            console.error('error postiting project ', response);
-
-            if (response.description) {
-                setErrorDescription(response.description);
-            } else {
-                setErrorDescription('');
-            }
-
-            if (response.projectName) {
-                setErrorName(response.projectName);
-            } else {
-                setErrorName('');
-            }
-
-            if (response.projectIdentifier) {
-                setErrorId(response.projectIdentifier);
-            } else {
-                setErrorId('');
-            }
+    function setProjectAttributes(projectFromDb) {
+        setPid(projectFromDb.id)
+        setProjectName(projectFromDb.projectName);
+        setProjectIdentifier(projectFromDb.projectIdentifier);
+        setDescription(projectFromDb.description);
+        if (projectFromDb.end_date) {
+            setEndDate(projectFromDb.end_date)
+        }
+        if (projectFromDb.start_date) {
+            setStartDate(projectFromDb.start_date);
         }
     }
 
-    async function handleSubmit(e) {
-        e.preventDefault();
-
-        // pre-process 
-        // check if anything has changed
-        // if not avoid post method call
- 
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(project)
-        };
-
-        setLoading(true);
-
-        await fetch('http://www.localhost:8080/api/project', requestOptions)
-            .then(response => response.json())
-            .then(data => checkForErrors(data))
-        .catch((error) => console.error('Error: ', error))
-        .finally(() => setLoading(false));
-    }
-
-    function setProjectValues(response) {
-        console.log(response)
-        // required fields
-        setPid(response.id);
-        setProjectName(response.projectName);
-        setProjectIdentifier(response.projectIdentifier);
-        setDescription(response.description);
-
-        // optional fields
-        if (response.start_date) {
-            setStartDate(response.start_date);
+    function isEmpty(obj) {
+        for(var key in obj) {
+            if(obj.hasOwnProperty(key))
+                return false;
         }
-        if (response.end_date) {
-            setEndDate(response.end_date);
-        }
+        return true;
     }
-
-    async function getProjectDetails() {
-        setLoading(true);
-        await fetch(`http://www.localhost:8080/api/project/${id}`)
-            .then(res => res.json())
-            .then(data => setProjectValues(data))
-        .catch((error) => console.error(error))
-        .finally(() => setLoading(false));
-    }
-
-    useEffect(() => {
-        getProjectDetails();
-    }, []);
-
     
     if (loading) {
         return (
@@ -242,4 +237,9 @@ const EditProject = () => {
     )
 }
 
-export default EditProject;
+const mapStateToProps = (state) => ({
+    project: state.project.project,
+    errors: state.errors
+})
+
+export default connect(mapStateToProps, {getProjectById, createProject})(EditProject);

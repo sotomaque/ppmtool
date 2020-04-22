@@ -2,13 +2,16 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
+import { connect } from 'react-redux';
+import { createProject } from '../../actions/projectActions';
+
 import styles from "../../assets/js/projectBoardStyle.js";
-import { Typography, Button, CircularProgress } from "@material-ui/core";
+import { Typography, Button } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles(styles);
 
-const AddProject = () => {
+const AddProject = (props) => {
   const classes = useStyles();
   const [projectName, setProjectName] = React.useState("");
   const [projectIdentifier, setProjectIdentifier] = React.useState("");
@@ -16,11 +19,9 @@ const AddProject = () => {
   const [start_date, setStartDate] = React.useState("");
   const [end_date, setEndDate] = React.useState("");
 
-  const [errorName, setErrorName] = React.useState("");
+  const [errorName, setErrorName] = React.useState('');
+  const [errorId, setErrorId] = React.useState('');
   const [errorDescription, setErrorDescription] = React.useState("");
-  const [errorId, setErrorId] = React.useState("");
-
-  const [loading, setLoading] = React.useState(false);
 
   let history = useHistory();
 
@@ -32,71 +33,40 @@ const AddProject = () => {
     end_date,
   };
 
-  function checkForErrors(response) {
-    if (response.id) {
-      setErrorDescription("");
+  React.useEffect(() => {
+    if (props.errors) {
+      let errors = props.errors;
+      setErrorMessages(errors)
+    } else {
       setErrorName("");
       setErrorId("");
-      history.push({
-        pathname: "/dashboard",
-        showSuccessAlert: true,
-      });
+      setErrorDescription("");
+    }
+  }, [props])
+
+  function setErrorMessages(errorResponse) {
+    if (errorResponse?.description) {
+      setErrorDescription(errorResponse.description);
     } else {
-      console.error("error postiting project ", response);
-
-      if (response.description) {
-        setErrorDescription(response.description);
-      } else {
-        setErrorDescription("");
-      }
-
-      if (response.projectName) {
-        setErrorName(response.projectName);
-      } else {
-        setErrorName("");
-      }
-
-      if (response.projectIdentifier) {
-        setErrorId(response.projectIdentifier);
-      } else {
-        setErrorId("");
-      }
+      setErrorDescription("");
+    }
+    if (errorResponse?.projectName) {
+      setErrorName(errorResponse.projectName);
+    } else {
+      setErrorName("");
+    }
+    if (errorResponse?.projectIdentifier) {
+      setErrorId(errorResponse.projectIdentifier);
+    } else {
+      setErrorId("");
     }
   }
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
-
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(project),
-    };
-    setLoading(true);
-    await fetch("http://www.localhost:8080/api/project", requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        checkForErrors(data);
-        console.dir(data);
-      })
-      .catch((error) => console.error("Error: ", error))
-      .finally(() => setLoading(false));
+    props.createProject(project, history);
   }
 
-  if (loading) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          marginTop: 50,
-        }}
-      >
-        <CircularProgress />
-      </div>
-    );
-  }
 
   return (
     <div className="pt-4 mb-4">
@@ -107,7 +77,9 @@ const AddProject = () => {
             variant="contained"
             color="secondary"
             className={classes.button}
-            onClick={() => history.goBack()}
+            onClick={() => {
+              history.goBack();
+            }}
           >
             Go Back to Dashboard
           </Button>
@@ -210,4 +182,12 @@ const AddProject = () => {
   );
 };
 
-export default AddProject;
+
+const mapStateToProps = (state) => ({
+  errors: state.errors
+})
+
+export default connect(
+  mapStateToProps,
+  { createProject }
+)(AddProject);
