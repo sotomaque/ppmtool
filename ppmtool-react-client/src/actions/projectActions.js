@@ -34,7 +34,7 @@ export const getProjects = () => async (dispatch) => {
   }
 };
 
-export const getProjectById = (id, history) => async (dispatch) => {
+export const getProjectById = (id) => async (dispatch) => {
   try {
     const res = await axios.get(`http://www.localhost:8080/api/project/${id}`);
     dispatch({

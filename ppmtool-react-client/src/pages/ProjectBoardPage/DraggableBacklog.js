@@ -9,8 +9,6 @@ const itemsFromBackend = [
     { id: uuid(), summary: 'second Task' },
 ]
 
-
-
 const onDragEnd = (result, columns, setColumns) => {
     if (!result.destination) return; // nothing happens if we drop card outside context
 

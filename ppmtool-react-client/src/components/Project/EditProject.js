@@ -33,7 +33,8 @@ const EditProject = (props) => {
     useEffect(() => {
         console.log('hi')
         // fetching project details
-        props.getProjectById(id, history);   
+        props.getProjectById(id);   
+        console.log('this one too')
         if (!isEmpty(props.project) && refetch )  {
             setProjectAttributes(props.project); 
             console.log(props.project)

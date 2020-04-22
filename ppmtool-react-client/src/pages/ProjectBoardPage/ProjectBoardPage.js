@@ -22,6 +22,7 @@ import { Typography, Button, CircularProgress } from "@material-ui/core";
 
 import { connect } from 'react-redux';
 import { clearErrors } from '../../actions/errorActions';
+import DraggableBacklog from './DraggableBacklog';
 
 const useStyles = makeStyles(styles);
 

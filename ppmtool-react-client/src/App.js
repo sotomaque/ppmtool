@@ -14,6 +14,7 @@ import EditProjectPage from './pages/EditProjectPage/EditProjectPage';
 
 import ProjectBoardPage from './pages/ProjectBoardPage/ProjectBoardPage';
 import AddProjectTaskPage from './pages/AddProjectTaskPage/AddProjectTaskPage';
+import EditProjectTaskPage from './pages/EditProjectTaskPage/EditProjectTaskPage';
 
 import LoginPage from './pages/LoginPage/LoginPage';
 import SignupPage from './pages/SignupPage/SignupPage';
@@ -35,6 +36,7 @@ function App() {
 
             <Route exact path="/projectBoard/:id" component={ProjectBoardPage} />
             <Route path="/projectBoard/:id/addTask" component={AddProjectTaskPage} />
+            <Route path="/projectBoard/:id/editTask/:task_id" component={EditProjectTaskPage} />
 
             <Route path="/login" component={LoginPage} />
             <Route path="/signup" component={SignupPage} />

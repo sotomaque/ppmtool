@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Button } from '@material-ui/core';
@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 const ProjectTask = (props) => {
 
     const { task } = props;
+    const history = useHistory();
 
     const classes = useStyles();
     const { id } = useParams();
@@ -44,6 +45,10 @@ const ProjectTask = (props) => {
 
     function handleDelete(id, projectSequence) {
         props.deleteProjectTask(id, projectSequence)
+    }
+
+    function handleUpdateClicked(task_id) {
+        history.push(`/projectBoard/${id}/editTask/${task_id}`)
     }
 
     function showAlert(projectSequence) {
@@ -129,7 +134,7 @@ const ProjectTask = (props) => {
                     color="default"
                     className={classes.button}
                     startIcon={<Edit />}
-                    onClick={() => console.log('update clicked')}
+                    onClick={() => handleUpdateClicked(task.projectSequence)}
                     
                 >
                     Edit
