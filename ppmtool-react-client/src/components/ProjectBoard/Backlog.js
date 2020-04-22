@@ -12,13 +12,10 @@ const Backlog = ({ backlog }) => {
 
     backlog.forEach(task => {
         if (task.status === 'TO_DO') {
-            console.log("TODO FOUND");
             todoItems.push(task)
         } else if (task.status === 'IN_PROGRESS') {
-            console.log("INPROGRESS FOUND");
             inProgressItems.push(task)
         } else {
-            console.log('DONE FOUND');
             doneItems.push(task)
         }
     });

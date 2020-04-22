@@ -1,9 +1,19 @@
 import React from 'react';
+
+import { useParams } from "react-router-dom";
+
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Button } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete'
 import Edit from "@material-ui/icons/Edit";
+
 import Moment from 'react-moment';
+
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+
+import { connect } from 'react-redux';
+import { deleteProjectTask } from '../../../actions/backlogActions';
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -11,8 +21,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ProjectTask = ({ task }) => {
+const ProjectTask = (props) => {
+
+    const { task } = props;
+
     const classes = useStyles();
+    const { id } = useParams();
 
     let priorityString;
     let priorityClass;
@@ -27,6 +41,39 @@ const ProjectTask = ({ task }) => {
         priorityClass = "bg-info";
         priorityString = "LOW"
     }
+
+    function handleDelete(id, projectSequence) {
+        props.deleteProjectTask(id, projectSequence)
+    }
+
+    function showAlert(projectSequence) {
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <div className="custom-ui">
+                <h1>Are you sure?</h1>
+                <p>This Action Cannot be Undone</p>
+                <Button variant="contained" color="primary" onClick={onClose}>
+                  No
+                </Button>
+                <Button
+                  className="float-right"
+                  variant="contained"
+                  color="secondary"
+                  onClick={
+                    () => {
+                      handleDelete(id, projectSequence);
+                      onClose();
+                    }
+                  }
+                >
+                  Yes, Delete it!
+                </Button>
+              </div>
+            );
+          },
+        });
+      }
 
     return (
     <>
@@ -75,6 +122,7 @@ const ProjectTask = ({ task }) => {
                     )
                 }
             </div>
+            {/* TASK ACTIONS */}
             <div className="card-footer">
                 <Button
                     variant="contained"
@@ -92,7 +140,7 @@ const ProjectTask = ({ task }) => {
                     color="secondary"
                     className={classes.button}
                     startIcon={<DeleteIcon />}
-                    onClick={() => console.log('clicked')}
+                    onClick={() => showAlert(task.projectSequence)}
                     >
                     Delete
                 </Button> 
@@ -104,4 +152,4 @@ const ProjectTask = ({ task }) => {
 }
 
 
-export default ProjectTask;
+export default connect(null, { deleteProjectTask })(ProjectTask);

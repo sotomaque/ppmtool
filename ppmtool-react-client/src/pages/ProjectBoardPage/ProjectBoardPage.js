@@ -41,6 +41,9 @@ const ProjectBoardPage = (props) => {
     } 
   }, [props])
 
+  // TODO: 
+
+  // IF NO BACKLOG, SHOW MESSAGE
 
   return (
     <div className="mb-4">
