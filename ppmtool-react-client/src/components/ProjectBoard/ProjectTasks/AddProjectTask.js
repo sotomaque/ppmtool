@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { Typography, Button, CircularProgress } from "@material-ui/core";
+import { Typography, Button } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 
 import styles from "../../../assets/js/projectBoardStyle.js";
@@ -21,11 +21,10 @@ const AddProjectTask = (props) => {
   const [errorSummary, setErrorSummary] = React.useState("");
 
   const [acceptanceCriteria, setAcceptanceCriteria] = React.useState("");
-  const [errorAcceptanceCriteria, setErrorAcceptanceCriteria] = React.useState("");
 
   const [status, setStatus] = React.useState("");
 
-  const [priority, setPriority] = React.useState("");
+  const [priority, setPriority] = React.useState(0);
   const [dueDate, setDueDate] = React.useState("");
 
   let history = useHistory();
@@ -39,12 +38,25 @@ const AddProjectTask = (props) => {
   };
 
   React.useEffect(() => {
-    console.log('in here')
+    if (props.errors) {
+      let errors = props.errors;
+      setErrorMessages(errors)
+    } else {
+      setErrorSummary("");
+    }
   }, [props])
 
   function handleSubmit(e) {
     e.preventDefault();
     props.createProjectTask(id, projectTask, history);
+  }
+
+  function setErrorMessages(errorResponse) {
+    if (errorResponse?.summary) {
+      setErrorSummary(errorResponse.summary);
+    } else {
+      setErrorSummary("");
+    }
   }
   
   return (
@@ -89,8 +101,6 @@ const AddProjectTask = (props) => {
 
               <TextField
                 className="form-control form-control-lg"
-                error={errorAcceptanceCriteria ? true : false}
-                helperText={errorAcceptanceCriteria}
                 variant="outlined"
                 id="standard-basic"
                 label="Acceptance Criteria"
@@ -169,8 +179,7 @@ const AddProjectTask = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-
+  errors: state.errors
 })
 
-
-export default connect( null, {createProjectTask} )(AddProjectTask);
+export default connect( mapStateToProps, {createProjectTask} )(AddProjectTask);

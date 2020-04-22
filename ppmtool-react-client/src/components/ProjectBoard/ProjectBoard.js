@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Backlog from './Backlog';
@@ -13,12 +13,16 @@ import CreateProjectTaskButton from "./CreateProjectTaskButton.js";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
+import { connect } from 'react-redux';
+import { getBacklog } from '../../actions/backlogActions';
+import { getProjectById } from '../../actions/projectActions';
 
 const useStyles = makeStyles(styles);
 
-const ProjectBoard = () => {
+const ProjectBoard = (props) => {
     const classes = useStyles();
     const location = useLocation();
+    const { id } = useParams();
 
     const [showSuccessAddedAlert, setShowSuccessAddedAlert] = React.useState(false);
 
@@ -29,8 +33,13 @@ const ProjectBoard = () => {
     }
 
     React.useEffect(() => {
-        showSuccessAdded();
-      }, [location]);
+        // showSuccessAdded();
+        props.getBacklog(id);
+        props.getProjectById(id);
+    }, []);
+
+    const backlog = props.backlog.project_tasks;
+    const project = props.project.project;
 
     function showAlert() {
         confirmAlert({
@@ -59,8 +68,8 @@ const ProjectBoard = () => {
         <div className={classes.section}>
             <GridContainer justify="center">
                 <GridItem xs={12} sm={12} md={8}>
-                    <Typography variant="h3" color="textPrimary" align="center">selectedProject.projectName</Typography>
-                    <Typography variant="h4" color="textPrimary" align="center">selectedProject.description</Typography>
+                    <Typography variant="h3" color="textPrimary" align="center">{project.projectName}</Typography>
+                    <Typography variant="h4" color="textPrimary" align="center">{project.description}</Typography>
                 </GridItem>
             </GridContainer>
             <br/>
@@ -70,12 +79,15 @@ const ProjectBoard = () => {
             <hr />
             <br/>
             {
-                <Backlog />
+                <Backlog backlog={backlog} />
             }
-            
-        </div>
-        
+        </div>  
     );
 };
 
-export default ProjectBoard;
+const mapStateToProps = (state) => ({
+  backlog: state.backlog,
+  project: state.project
+});
+
+export default connect(mapStateToProps, { getBacklog, getProjectById })(ProjectBoard);
