@@ -63,6 +63,8 @@ const ProjectBoard = (props) => {
     if (showSuccessAddedAlert) {
         showAlert();
     }
+
+    
     
     return (
         <div className={classes.section}>

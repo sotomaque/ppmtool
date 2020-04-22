@@ -14,43 +14,47 @@ const useStyles = makeStyles((theme) => ({
 const ProjectTask = ({ task }) => {
     const classes = useStyles();
 
+    let priorityString;
+    let priorityClass;
+
+    if (task.priority === 1) {
+        priorityClass = "bg-danger";
+        priorityString = "HIGH"
+    } else if (task.priority === 2) {
+        priorityClass = "bg-warning";
+        priorityString = "MEDIUM"
+    } else {
+        priorityClass = "bg-info";
+        priorityString = "LOW"
+    }
+
     return (
     <>
         <div className="card mb-1 bg-light">
-            <div className="card-header">
-                <Typography variant="body1" color="textPrimary">ID: {task.projectSequence}</Typography>
+            {/* ID and PRIORITY */}
+            <div className={`card-header ${priorityClass}`}>
+                <Typography variant="h6" color="textPrimary">ID: {task.projectSequence}</Typography>
+                {' '}
+                <Typography variant="caption" color="textPrimary">PRIORITY: {priorityString}</Typography>
             </div>
             <div className="card-body bg-light">
                 {/* SUMMARY */}
-                <div>
-                    <Typography variant="subtitle1" color="textPrimary">SUMMARY:</Typography>
-                    <Typography variant="subtitle1" color="textPrimary">{task.summary}</Typography>
+                <div >
+                    <Typography variant="h6" color="textPrimary">SUMMARY:</Typography>
+                    <Typography variant="body2" color="textPrimary">{task.summary}</Typography>
                 </div>
                 {/* ACCEPTANCE CRITERIA */}
                 {
-                    
                     task.acceptanceCriteria && (
                         <>
                             <hr />
                             <span className="card-text text-truncate ">
-                                <Typography variant="subtitle1" color="textPrimary">ACCEPTANCE CRITERIA:</Typography>
+                                <Typography variant="h6" color="textPrimary">ACCEPTANCE CRITERIA:</Typography>
                                 <Typography variant="body2" color="textPrimary">{task.acceptanceCriteria}</Typography>
                             </span>
                         </>
                     )
                 }
-                {/* PRIORITY */}
-                {
-                    task.priority && (
-                        <>
-                            <hr />
-                            <span className="card-text text-truncate ">
-                                <Typography variant="body2" color="textPrimary">PRIORITY: {task.priority}</Typography>
-                            </span>
-                        </>
-                    )
-                }
-
                 {/* DUE DATE */}
                 {
 
@@ -58,7 +62,7 @@ const ProjectTask = ({ task }) => {
                         <>
                             <hr />
                             <span className="card-text text-truncate">
-                                <Typography variant="body2" color="textPrimary">DUE:</Typography>
+                                <Typography variant="h6" color="textPrimary">DUE:</Typography>
                                 <Moment
                                     format="MM/DD/YYYY"
                                     date={task.due_date}

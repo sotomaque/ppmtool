@@ -42,7 +42,10 @@ export const getProjectById = (id, history) => async (dispatch) => {
       payload: res.data
     });
   } catch(err) {
-    history.push("/dashboard");
+    dispatch({
+      type: GET_ERRORS,
+      payload: err.response.data
+    });
   }
 };
 

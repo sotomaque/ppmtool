@@ -1,7 +1,28 @@
 import React from 'react';
 import ProjectTask from './ProjectTasks/ProjectTask';
 
+
+
 const Backlog = ({ backlog }) => {
+
+
+    let todoItems = [];
+    let inProgressItems = [];
+    let doneItems = [];
+
+    backlog.forEach(task => {
+        if (task.status === 'TO_DO') {
+            console.log("TODO FOUND");
+            todoItems.push(task)
+        } else if (task.status === 'IN_PROGRESS') {
+            console.log("INPROGRESS FOUND");
+            inProgressItems.push(task)
+        } else {
+            console.log('DONE FOUND');
+            doneItems.push(task)
+        }
+    });
+
     return (
         <div className="row">
             {/* TODO */}
