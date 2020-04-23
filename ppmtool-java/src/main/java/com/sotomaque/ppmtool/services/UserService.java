@@ -1,6 +1,7 @@
 package com.sotomaque.ppmtool.services;
 
 import com.sotomaque.ppmtool.domain.User;
+import com.sotomaque.ppmtool.exceptions.UsernameAlreadyRegisteredException;
 import com.sotomaque.ppmtool.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,12 +18,18 @@ public class UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public User saveUser(User newUser) {
-        newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
-        // ensure username has to be unique: (custom exception)
-
-        // ensure password and confirm password match
+        try {
+            newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
+            // ensure username has to be unique: (custom exception)
+            newUser.setUsername(newUser.getUsername());
+            // ensure password and confirm password match
             // don't persist / show confirm password
-        return userRepository.save(newUser);
+            newUser.setConfirmPassword("");
+            return userRepository.save(newUser);
+        } catch (Exception e){
+            throw new UsernameAlreadyRegisteredException("Username: " + newUser.getUsername() + " is Already Registered");
+        }
+
     }
 
 }
