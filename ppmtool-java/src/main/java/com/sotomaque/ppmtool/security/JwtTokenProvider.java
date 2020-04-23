@@ -1,8 +1,7 @@
 package com.sotomaque.ppmtool.security;
 
 import com.sotomaque.ppmtool.domain.User;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -44,6 +43,32 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
     }
+
     // validate token
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
+            return true;
+        } catch (SignatureException ex) {
+            System.out.println("INVALID JWT SIGNATURE");
+        } catch (MalformedJwtException ex) {
+            System.out.println("INVALID JWT TOKEN");
+        } catch (ExpiredJwtException ex) {
+            System.out.println("EXPIRED JWT TOKEN");
+        } catch (UnsupportedJwtException ex) {
+            System.out.println("UNSUPPORTED JWT EXCEPTION");
+        } catch (IllegalArgumentException ex) {
+            System.out.println("JWT Claims String is Empty");
+        }
+        return false;
+    }
+
     // get userId from token (with CustomUserService)
+    // extracting it from claims
+    public Long getUserIdFromJWT(String token) {
+        Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
+        String id = (String) claims.get("id");
+
+        return Long.parseLong(id);
+    }
 }
