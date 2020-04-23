@@ -50,6 +50,14 @@ public class Project {
     @JsonIgnore
     private Backlog backlog;
 
+    // User
+    @ManyToOne(fetch = FetchType.LAZY) // we dont need to load the user just the project
+    @JsonIgnore // prevent infinite recursion problem
+    private User user;
+
+    // String version of name of project creator
+    private String projectLeader;
+
     // no arg constructor
     public Project() {
     }
@@ -117,4 +125,11 @@ public class Project {
     public void setBacklog(Backlog backlog) {
         this.backlog = backlog;
     }
+
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
+
+    public String getProjectLeader() { return projectLeader; }
+
+    public void setProjectLeader(String projectLeader) { this.projectLeader = projectLeader; }
 }

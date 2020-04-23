@@ -7,8 +7,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class User implements UserDetails {
@@ -45,6 +47,10 @@ public class User implements UserDetails {
     }
 
     // OneToMany with Project
+    // orphan removal -> if u delete the user, delete all of his projects as well
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
+    private List<Project> projects = new ArrayList<>();
+
 
     // CONSTRUCTOR
     public User() {
@@ -72,9 +78,12 @@ public class User implements UserDetails {
     public Date getUpdated_at() { return updated_at; }
     public void setUpdated_at(Date updated_at) { this.updated_at = updated_at; }
 
-    // USER_DETAILS interface methods
+    public List<Project> getProjects() { return projects; }
 
-    // since app has no role based permissions, return null
+    public void setProjects(List<Project> projects) { this.projects = projects; }
+
+    // USER_DETAILS interface methods
+    // NOTE: since app has no role based permissions, return null
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() { return null; }
