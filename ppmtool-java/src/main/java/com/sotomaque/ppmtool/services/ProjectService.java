@@ -4,6 +4,7 @@ import com.sotomaque.ppmtool.domain.Backlog;
 import com.sotomaque.ppmtool.domain.Project;
 import com.sotomaque.ppmtool.domain.User;
 import com.sotomaque.ppmtool.exceptions.ProjectIdException;
+import com.sotomaque.ppmtool.exceptions.ProjectNotFoundException;
 import com.sotomaque.ppmtool.repositories.BacklogRepository;
 import com.sotomaque.ppmtool.repositories.ProjectRepository;
 import com.sotomaque.ppmtool.repositories.UserRepository;
@@ -51,17 +52,22 @@ public class ProjectService {
         }
     }
 
-    public Project findProjectByIdentifier(String projectId) {
+    public Project findProjectByIdentifier(String projectId, String username) {
         Project project = projectRepository.findByProjectIdentifier(projectId);
         if (project == null) {
             throw new ProjectIdException("Project ID: " + projectId.toUpperCase() + " does not exist.");
+        }
+        // check if user owns that project
+        if (!project.getProjectLeader().equals(username)) {
+            // if not throw new error
+            throw new ProjectNotFoundException("Project not found in your account");
         }
         return project;
     }
 
     // iterable returns list in json object
-    public Iterable<Project> findAllProjects() {
-        return projectRepository.findAll();
+    public Iterable<Project> findAllProjects(String username) {
+        return projectRepository.findAllByProjectLeader(username);
     }
 
     public void deleteProjectByIdentifier(String projectId) {
