@@ -46,7 +46,10 @@ public class ProjectTaskService {
         projectTask.setProjectSequence(projectIdentifier + "-" + BacklogSequence);
         // set Project Task identifier
         projectTask.setProjectIdentifier(projectIdentifier);
+
         // set initial priority when priority is null
+        // BUG FIX:
+        // need to check null first
         if (projectTask.getPriority() == null || projectTask.getPriority() == 0) {
             // 3 is low priority;
             projectTask.setPriority(3);
@@ -60,13 +63,14 @@ public class ProjectTaskService {
 
     }
 
-    public Iterable<ProjectTask> findBacklogById(String id) {
+    public Iterable<ProjectTask> findBacklogById(String id, String username) {
 
-        Project project = projectRepository.findByProjectIdentifier(id);
-
-        if (project == null) {
-            throw new ProjectNotFoundException("Project with ID: " + id + " does not exist");
-        }
+//        Project project = projectRepository.findByProjectIdentifier(id);
+//
+//        if (project == null) {
+//            throw new ProjectNotFoundException("Project with ID: " + id + " does not exist");
+//        }
+        projectService.findProjectByIdentifier(id, username);
 
         return projectTaskRepository.findByProjectIdentifierOrderByPriority(id);
     }
