@@ -1,4 +1,5 @@
 import React, { useLayoutEffect } from "react";
+import { useHistory } from 'react-router-dom';
 
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -22,10 +23,14 @@ import styles from "../../assets/js/login.js";
 
 import image from "../../assets/img/signup.jpg";
 
+import { connect } from 'react-redux';
+import { createNewUser } from '../../actions/securityActions';
+
 const useStyles = makeStyles(styles);
 
-export default function SignupPage() {
+function SignupPage(props) {
     useLockBodyScroll();
+    const history = useHistory();
     const [fullName, setFullName] = React.useState('');
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
@@ -36,6 +41,19 @@ export default function SignupPage() {
         setCardAnimation("");
     }, 700);
     const classes = useStyles();
+
+    const handleSignupPressed = (e) => {
+        e.preventDefault();
+
+        const newUser = {
+            username,
+            fullName,
+            password,
+            confirmPassword
+        }
+
+        props.createNewUser(newUser, history);
+    }
 
     return (
         <>
@@ -179,7 +197,7 @@ export default function SignupPage() {
                                     </CardBody>
                                     {/* REGISTER BUTTON */}
                                     <CardFooter className={classes.cardFooter}>
-                                    <Button simple color="primary" size="lg" onClick={() => console.log('name: ', fullName, ' username: ', username, ' password: ', password, ' confirm password: ', confirmPassword)}>
+                                    <Button simple color="primary" size="lg" onClick={(e) => handleSignupPressed(e)}>
                                     Register
                                     </Button>
                                 </CardFooter>
@@ -203,5 +221,10 @@ function useLockBodyScroll() {
      // Re-enable scrolling when component unmounts
      return () => document.body.style.overflow = originalStyle;
      }, []); // Empty array ensures effect is only run on mount and unmount
-  }
-  
+}
+
+const mapStateToProps = (state) => ({
+    errors: state.erros
+})
+ 
+export default connect(mapStateToProps, { createNewUser })(SignupPage);
