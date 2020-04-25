@@ -8,21 +8,22 @@ import { makeStyles } from "@material-ui/core/styles";
 
 // core components
 import Header from "../../components/Header/Header.js";
-// import Footer from "./components/Footer/Footer.js";
+import HeaderLinksLeft from "../../components/Header/HeaderLinksLeft.js";
+import HeaderLinks from "../../components/Header/HeaderLinks.js";
+import Footer from "../../components/Footer/Footer.js";
 import GridContainer from "../../components/Grid/GridContainer.js";
 import GridItem from "../../components/Grid/GridItem.js";
-import HeaderLinks from "../../components/Header/HeaderLinks.js";
 import Parallax from "../../components/Parallax/Parallax.js";
 
 import styles from "../../assets/js/landingPage.js";
 
 // Sections for this page
 import ProductSection from "./Sections/ProductSection.js";
-// import TeamSection from "./Sections/TeamSection.js";
-// import WorkSection from "./Sections/WorkSection.js";
+import TeamSection from "./Sections/TeamSection.js";
+import WorkSection from "./Sections/WorkSection.js";
 
 import image from "../../assets/img/landing.jpg";
-import HeaderLinksLeft from "../../components/Header/HeaderLinksLeft.js";
+
 
 const dashboardRoutes = [];
 
@@ -62,11 +63,11 @@ export default function LandingPage(props) {
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div className={classes.container}>
           <ProductSection />
-          <ProductSection />
-          <ProductSection />
+          <TeamSection />
+          <WorkSection />
         </div>
       </div>
-     
+      <Footer />
     </div>
   );
 }

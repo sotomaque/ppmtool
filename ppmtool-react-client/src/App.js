@@ -20,26 +20,27 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import SignupPage from './pages/SignupPage/SignupPage';
 
 
-
-
 function App() {
 
   return (
     <Provider store={store}>
       <Router>
           <Switch>
+            {/*
+              PUBLIC ROUTES
+            */}
             <Route exact path="/" component={LandingPage} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/signup" component={SignupPage} />
+            {/*
+              PRIVATE ROUTES
+            */}
             <Route exact path="/dashboard" component={DashboardPage} />
-
             <Route path="/addProject" component={AddProjectPage} />
             <Route path="/editProject/:id" component={EditProjectPage} />
-
             <Route exact path="/projectBoard/:id" component={ProjectBoardPage} />
             <Route path="/projectBoard/:id/addTask" component={AddProjectTaskPage} />
             <Route path="/projectBoard/:id/editTask/:task_id" component={EditProjectTaskPage} />
-
-            <Route path="/login" component={LoginPage} />
-            <Route path="/signup" component={SignupPage} />
           </Switch>
       </Router>
     </Provider>
