@@ -1,7 +1,5 @@
 import React, { useLayoutEffect } from "react";
 
-import { useHistory } from "react-router-dom";
-
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
@@ -26,6 +24,7 @@ import image from "../../assets/img/login.jpg";
 import { connect } from 'react-redux';
 import { login } from '../../actions/securityActions';
 import { CircularProgress } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(styles);
 
@@ -56,17 +55,20 @@ function LoginPage(props) {
             setErrorUsername('');
             setErrorPassword('');
         }
+
+        if (props?.security?.validToken) {
+            history.push('/dashboard')
+        }
     }, [props])
 
     const handleLoginPressed = (e) => {
+        setLoading(true);
         e.preventDefault();
-
         const user = {
             username,
             password
         }
-        setLoading(true);
-        props.login(user, history);
+        props.login(user);
         setLoading(false);
     }
 
@@ -230,7 +232,8 @@ function useLockBodyScroll() {
 
 
 const mapStateToProps = (state) => ({
-    errors: state.errors
+    errors: state.errors,
+    security: state.security
 });
 
 export default connect(mapStateToProps, { login })(LoginPage);
