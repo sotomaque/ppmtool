@@ -20,7 +20,6 @@ import styles from "../../assets/js/landingPage.js";
 // Sections for this page
 import ProductSection from "./Sections/ProductSection.js";
 import TeamSection from "./Sections/TeamSection.js";
-import WorkSection from "./Sections/WorkSection.js";
 
 import image from "../../assets/img/landing.jpg";
 
@@ -64,7 +63,6 @@ export default function LandingPage(props) {
         <div className={classes.container}>
           <ProductSection />
           <TeamSection />
-          <WorkSection />
         </div>
       </div>
       <Footer />

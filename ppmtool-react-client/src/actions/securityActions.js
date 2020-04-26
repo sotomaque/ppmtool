@@ -10,3 +10,13 @@ export const createNewUser = (newUser, history) => async (dispatch) => {
         dispatch({ type: GET_ERRORS, payload: err.response.data });
     }
 }
+
+export const login = (user, history) => async (dispatch) => {
+    try {
+        await axios.post("http://www.localhost:8080/api/users/login", user);
+        history.push('/');
+        dispatch({ type: GET_ERRORS, payload: {} });
+    } catch (err) {
+        dispatch({ type: GET_ERRORS, payload: err.response.data });
+    }
+}

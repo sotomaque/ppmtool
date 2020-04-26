@@ -1,5 +1,7 @@
 import React, { useLayoutEffect } from "react";
 
+import { useHistory } from "react-router-dom";
+
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
@@ -21,16 +23,82 @@ import styles from "../../assets/js/login.js";
 
 import image from "../../assets/img/login.jpg";
 
+import { connect } from 'react-redux';
+import { login } from '../../actions/securityActions';
+import { CircularProgress } from "@material-ui/core";
+
 const useStyles = makeStyles(styles);
 
-export default function LoginPage() {
-    useLockBodyScroll();
+function LoginPage(props) {
+    useLockBodyScroll(); // prevent scrolling
+
+    const history = useHistory();
+
+    const [username, setUsername] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [errorUsername, setErrorUsername] = React.useState('');
+    const [errorPassword, setErrorPassword] = React.useState('');
+
+    const [loading, setLoading] = React.useState(false);
 
     const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
     setTimeout(function() {
         setCardAnimation("");
     }, 700);
     const classes = useStyles();
+
+    React.useEffect(() => {
+        if (props.errors) {
+            let errors = props.errors;
+            console.log('found errors!')
+            setErrorMessages(errors);
+        } else {
+            setErrorUsername('');
+            setErrorPassword('');
+        }
+    }, [props])
+
+    const handleLoginPressed = (e) => {
+        e.preventDefault();
+
+        const user = {
+            username,
+            password
+        }
+        setLoading(true);
+        props.login(user, history);
+        setLoading(false);
+    }
+
+    const setErrorMessages = (errorResponse) => {
+
+        if (errorResponse?.username) {
+            setErrorUsername(errorResponse?.username);
+        } else {
+            setErrorUsername('');
+        }
+
+        if (errorResponse?.password) {
+            setErrorPassword(errorResponse?.password);
+        } else {
+            setErrorPassword('');
+        }
+         
+    }
+
+    if (loading) {
+        return (
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginTop: 50
+            }}>
+                <CircularProgress />
+            </div>
+        );
+    } 
+    
     return (
         <>
             <Header
@@ -89,13 +157,18 @@ export default function LoginPage() {
                                     <p className={classes.divider}>Or Be Classical</p>
                                     {/* LOGIN FORM */}
                                     <CardBody>
+                                        {/* EMAIL (aka USERNAME) */}
                                         <CustomInput
-                                            labelText="Email..."
+                                            labelText={ errorUsername ? errorUsername : "Email..."}
                                             id="email"
+                                            name="username"
+                                            value={username}
                                             formControlProps={{
                                                 fullWidth: true
                                             }}
+                                            error={errorUsername ? true : false}
                                             inputProps={{
+                                                onChange: (event) => setUsername(event.target.value),
                                                 type: "email",
                                                 endAdornment: (
                                                 <InputAdornment position="end">
@@ -104,13 +177,18 @@ export default function LoginPage() {
                                                 )
                                             }}
                                         />
+                                        {/* PASSWORD */}
                                         <CustomInput
-                                            labelText="Password"
+                                            labelText={ errorPassword ? errorPassword : "Password..."}
                                             id="pass"
+                                            name="password"
+                                            value={password}
                                             formControlProps={{
                                                 fullWidth: true
                                             }}
+                                            error={errorPassword ? true : false}
                                             inputProps={{
+                                                onChange: (event) => setPassword(event.target.value),
                                                 type: "password",
                                                 endAdornment: (
                                                 <InputAdornment position="end">
@@ -125,7 +203,7 @@ export default function LoginPage() {
                                     </CardBody>
                                     {/* LOGIN BUTTON */}
                                     <CardFooter className={classes.cardFooter}>
-                                        <Button simple color="primary" size="lg">
+                                        <Button simple color="primary" size="lg" onClick={(e) => handleLoginPressed(e)}>
                                         Login
                                         </Button>
                                     </CardFooter>
@@ -136,7 +214,6 @@ export default function LoginPage() {
                 </div> 
             </div>
         </>
-        
     );
 }
 
@@ -149,5 +226,11 @@ function useLockBodyScroll() {
      // Re-enable scrolling when component unmounts
      return () => document.body.style.overflow = originalStyle;
      }, []); // Empty array ensures effect is only run on mount and unmount
-  }
-  
+}
+
+
+const mapStateToProps = (state) => ({
+    errors: state.errors
+});
+
+export default connect(mapStateToProps, { login })(LoginPage);

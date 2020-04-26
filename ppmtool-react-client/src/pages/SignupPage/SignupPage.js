@@ -29,8 +29,10 @@ import { createNewUser } from '../../actions/securityActions';
 const useStyles = makeStyles(styles);
 
 function SignupPage(props) {
-    useLockBodyScroll();
+    useLockBodyScroll(); // prevent scrolling
+
     const history = useHistory();
+    
     const [fullName, setFullName] = React.useState('');
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
@@ -224,7 +226,7 @@ function useLockBodyScroll() {
 }
 
 const mapStateToProps = (state) => ({
-    errors: state.erros
+    errors: state.errors
 })
  
 export default connect(mapStateToProps, { createNewUser })(SignupPage);
