@@ -66,8 +66,8 @@ const ProjectItem = (props) => {
 
   return (
       <div className="card card-body bg-light mb-3">
-          <div className="row">
-            <div className="col-2">
+          <div className="row" style={{justifyContent: 'center'}}>
+            <div className="col-lg-2">
               <span>
                 <Typography variant="subtitle1" color="textPrimary">
                   Project ID: {project.projectIdentifier}
@@ -118,7 +118,7 @@ const ProjectItem = (props) => {
                 </span>
               )}
             </div>
-            <div className="col-md-2 d-none d-lg-block">
+            <div className="col-md-2">
               <Button
                 variant="contained"
                 color="primary"

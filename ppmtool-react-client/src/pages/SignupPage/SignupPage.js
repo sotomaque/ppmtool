@@ -24,7 +24,7 @@ import styles from "../../assets/js/login.js";
 import image from "../../assets/img/signup.jpg";
 
 import { connect } from 'react-redux';
-import { createNewUser } from '../../actions/securityActions';
+import { createNewUser, login } from '../../actions/securityActions';
 import { CircularProgress } from "@material-ui/core";
 
 const useStyles = makeStyles(styles);
@@ -64,7 +64,14 @@ function SignupPage(props) {
             confirmPassword
         }
 
-        props.createNewUser(newUser, history);
+        const loginRequest = {
+            username,
+            password
+        }
+
+        props.createNewUser(newUser, history)
+            .then(() => props.login(loginRequest))
+            .then(() => history.push('/dashboard'));
     }
 
     React.useEffect(() => {
@@ -301,4 +308,4 @@ const mapStateToProps = (state) => ({
     security: state.security
 })
  
-export default connect(mapStateToProps, { createNewUser })(SignupPage);
+export default connect(mapStateToProps, { createNewUser, login })(SignupPage);

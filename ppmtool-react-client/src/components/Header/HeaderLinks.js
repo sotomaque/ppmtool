@@ -22,8 +22,9 @@ const HeaderLinks = (props) => {
   const { validToken, user } = props?.security;
 
   const handleLogout = () => {
-    props.logout();
-    history.push('/');
+    props.logout()
+      .then(() => history.push('/'))
+      .then(() => window.location.reload(false));
   }
 
   function isEmpty(obj) {
@@ -39,7 +40,6 @@ const HeaderLinks = (props) => {
       <List className={classes.list}>      
         <ListItem className={classes.listItem}>
           <Button
-            style={{color: 'white'}}
             onClick={handleLogout}
             className={classes.navLink}
           >
