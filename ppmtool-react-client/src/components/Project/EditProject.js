@@ -31,13 +31,10 @@ const EditProject = (props) => {
     let history = useHistory();
 
     useEffect(() => {
-        console.log('hi')
         // fetching project details
         props.getProjectById(id);   
-        console.log('this one too')
         if (!isEmpty(props.project) && refetch )  {
             setProjectAttributes(props.project); 
-            console.log(props.project)
             if (props.project.id) {
                 setRefetch(false);
                 setLoading(false);

@@ -25,6 +25,7 @@ import image from "../../assets/img/signup.jpg";
 
 import { connect } from 'react-redux';
 import { createNewUser } from '../../actions/securityActions';
+import { CircularProgress } from "@material-ui/core";
 
 const useStyles = makeStyles(styles);
 
@@ -34,9 +35,18 @@ function SignupPage(props) {
     const history = useHistory();
     
     const [fullName, setFullName] = React.useState('');
+    const [errorFullName, setErrorFullName] = React.useState('');
+
     const [username, setUsername] = React.useState('');
+    const [errorUsername, setErrorUsername] = React.useState('');
+
     const [password, setPassword] = React.useState('');
+    const [errorPassword, setErrorPassword] = React.useState('');
+
     const [confirmPassword, setConfirmPassword] = React.useState('');
+    const [errorConfirmPassword, setErrorConfirmPassword] = React.useState('');
+
+    const [loading, setLoading] = React.useState(false);
 
     const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
     setTimeout(function() {
@@ -58,11 +68,61 @@ function SignupPage(props) {
     }
 
     React.useEffect(() => {
+        if (props.errors) {
+            let errors = props.errors;
+            setErrorMessages(errors);
+        } else {
+            setErrorFullName('');
+        }
+    }, [props]);
+
+    React.useEffect(() => {
         // prevent showing sign up page if logged in
         if (props?.security?.validToken) {
             history.push('/dashboard')
         }
     }, [])
+
+    const setErrorMessages = (errorResponse) => {
+
+        if (errorResponse?.fullName) {
+            setErrorFullName(errorResponse.fullName);
+        } else {
+            setErrorFullName('');
+        }
+
+        if (errorResponse?.username) {
+            setErrorUsername(errorResponse.username);
+        } else {
+            setErrorUsername('');
+        }
+
+        if (errorResponse?.password) {
+            setErrorPassword(errorResponse.password);
+        } else {
+            setErrorPassword('');
+        }
+
+        if (errorResponse?.confirmPassword) {
+            setErrorConfirmPassword(errorResponse.confirmPassword);
+        } else {
+            setErrorConfirmPassword('');
+        }
+         
+    }
+
+    if (loading) {
+        return (
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginTop: 50
+            }}>
+                <CircularProgress />
+            </div>
+        );
+    } 
 
     return (
         <>
@@ -124,12 +184,13 @@ function SignupPage(props) {
                                     <CardBody>
                                         {/* FULL NAME */}
                                         <CustomInput
-                                            labelText="Full Name..."
+                                            labelText={ errorFullName ? errorFullName : "Full Name"}
                                             id="first"
                                             value={fullName}
                                             formControlProps={{
                                                 fullWidth: true
                                             }}
+                                            error={errorFullName ? true : false}
                                             inputProps={{
                                                 onChange: (event) => setFullName(event.target.value),
                                                 type: "text",
@@ -142,13 +203,14 @@ function SignupPage(props) {
                                         />
                                         {/* EMAIL (aka USERNAME) */}
                                         <CustomInput
-                                            labelText="Email..."
+                                            labelText={ errorUsername ? errorUsername : "Email"}
                                             id="email"
                                             name="username"
                                             value={username}
                                             formControlProps={{
                                                 fullWidth: true
                                             }}
+                                            error={errorUsername ? true : false}
                                             inputProps={{
                                                 onChange: (event) => setUsername(event.target.value),
                                                 type: "email",
@@ -161,13 +223,14 @@ function SignupPage(props) {
                                         />
                                         {/* PASSWORD */}
                                         <CustomInput
-                                            labelText="Password"
+                                            labelText={ errorPassword ? errorPassword : "Password"}
                                             id="pass"
                                             name="password"
                                             value={password}
                                             formControlProps={{
                                                 fullWidth: true
                                             }}
+                                            error={errorPassword ? true : false}
                                             inputProps={{
                                                 onChange: (event) => setPassword(event.target.value),
                                                 type: "password",
@@ -183,13 +246,14 @@ function SignupPage(props) {
                                         />
                                         {/* CONFIRM PASSWORD */}
                                         <CustomInput
-                                            labelText="Confirm Password"
+                                            labelText={ errorConfirmPassword ? errorConfirmPassword : "Confirm Password"}
                                             id="pass"
                                             name="confirmPassword"
                                             value={confirmPassword}
                                             formControlProps={{
                                                 fullWidth: true
                                             }}
+                                            error={errorConfirmPassword ? true : false}
                                             inputProps={{
                                                 onChange: (event) => setConfirmPassword(event.target.value),
                                                 type: "password",

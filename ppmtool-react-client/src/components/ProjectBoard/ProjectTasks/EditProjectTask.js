@@ -3,7 +3,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import styles from "../../../assets/js/projectBoardStyle.js";
 import { Typography, TextField, Button, CircularProgress } from '@material-ui/core';
-
+import Moment from "react-moment";
 
 import { connect } from 'react-redux';
 import { getTaskById, updateTask } from '../../../actions/backlogActions';
@@ -55,7 +55,7 @@ const EditProjectTask = (props) => {
         }
 
         if (taskFromDb.dueDate) {
-            setDueDate(taskFromDb.dueDate)
+            setDueDate(taskFromDb.dueDate.slice(0,10))
         }
     }
 

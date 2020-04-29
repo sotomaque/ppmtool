@@ -14,6 +14,7 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/backlog")
+@CrossOrigin
 public class BacklogController {
 
     @Autowired
@@ -22,13 +23,13 @@ public class BacklogController {
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
+
     @PostMapping("/{backlog_id}")
-    public ResponseEntity<?> addProjectTaskToBacklog(@Valid @RequestBody ProjectTask projectTask, BindingResult result,
-                                                     @PathVariable String backlog_id, Principal principal) {
+    public ResponseEntity<?> addProjectTaskToBacklog(@Valid @RequestBody ProjectTask projectTask,
+            BindingResult result, @PathVariable String backlog_id, Principal principal){
 
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationErrorService(result);
-        if (errorMap != null)  return errorMap;
-
+        if (errorMap != null) return errorMap;
 
         ProjectTask projectTask1 = projectTaskService.addProjectTask(backlog_id, projectTask, principal.getName());
         return new ResponseEntity<ProjectTask>(projectTask1, HttpStatus.CREATED);

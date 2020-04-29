@@ -35,9 +35,7 @@ const ProjectBoardPage = (props) => {
   const [error, setError] = React.useState('');
 
   React.useEffect(() => {
-    console.log('here')
     if (props.errors.projectIdentifier) {
-      console.log('here2')
       setError(props.errors.projectIdentifier);
     } 
   }, [props])

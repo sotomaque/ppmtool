@@ -30,7 +30,7 @@ const Backlog = ({ backlog }) => {
                     </div> 
                 </div>
                 {
-                    backlog && backlog.map(task => {
+                    todoItems && todoItems.map(task => {
                         return (
                             <ProjectTask task={task} key={task.id} />
                         )
@@ -47,18 +47,28 @@ const Backlog = ({ backlog }) => {
                     </div>
                 </div>
                 {
-                //  <!-- SAMPLE PROJECT TASK STARTS HERE -->
-                //         <!-- SAMPLE PROJECT TASK ENDS HERE -->
+                    inProgressItems && inProgressItems.map(task => {
+                        return (
+                            <ProjectTask task={task} key={task.id} />
+                        )
+                    })
                 }
             </div>
 
             {/*  Done  */}
             <div className="col-md-4">
                 <div className="card text-center mb-2">
-                <div className="card-header bg-success text-white">
-                    <h3>Done</h3>
+                    <div className="card-header bg-success text-white">
+                        <h3>Done</h3>
+                    </div>
                 </div>
-                </div>
+                {
+                    doneItems && doneItems.map(task => {
+                        return (
+                            <ProjectTask task={task} key={task.id} />
+                        )
+                    })
+                }
             </div>
         </div>
     )

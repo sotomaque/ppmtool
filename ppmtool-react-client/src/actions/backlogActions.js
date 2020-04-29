@@ -3,6 +3,8 @@ import { GET_ERRORS, GET_BACKLOG, GET_PROJECT_TASK, DELETE_PROJECT_TASK } from '
 
 export const createProjectTask = (backlog_id, project_task, history) => async (dispatch) => {
     try {
+        console.log('attempting to add project task: ', project_task);
+        console.log('onto backlog with id: ', backlog_id)
         await axios.post(`http://www.localhost:8080/api/backlog/${backlog_id}`, project_task)
         history.goBack();
         dispatch({ type: GET_ERRORS, payload: {} });
@@ -41,8 +43,6 @@ export const getTaskById = (backlog_id, task_id) => async (dispatch) => {
 
 export const updateTask = (backlog_id, task_id, project_task, history) => async (dispatch) => {
     try {
-        console.log('attempting to hit: ', `http://www.localhost:8080/api/backlog/${backlog_id}/${task_id}`);
-        console.log('with payload: ', project_task)
         await axios.patch(`http://www.localhost:8080/api/backlog/${backlog_id}/${task_id}`, project_task);
         history.goBack();
         dispatch({ type: GET_ERRORS, payload: {} });

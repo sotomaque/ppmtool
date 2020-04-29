@@ -23,7 +23,7 @@ const HeaderLinks = (props) => {
 
   const handleLogout = () => {
     props.logout();
-    history.push('/login');
+    history.push('/');
   }
 
   function isEmpty(obj) {

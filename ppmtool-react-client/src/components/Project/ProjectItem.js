@@ -88,7 +88,7 @@ const ProjectItem = (props) => {
                   <p>Started on</p>
                   <span>
                     <Moment
-                      format="MM/DD/YYYY"
+                      format="dddd, MMMM Do YYYY"
                       date={project.start_date}
                       style={{ color: "blue" }}
                     />
@@ -106,7 +106,7 @@ const ProjectItem = (props) => {
                   <p>Ends on</p>
                   <span>
                     <Moment
-                      format="MM/DD/YYYY"
+                      format="dddd, MMMM Do YYYY"
                       date={project.end_date}
                       style={{ color: "blue" }}
                     />

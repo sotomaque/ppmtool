@@ -1,7 +1,6 @@
 import React from "react";
-// nodejs library that concatenates classes
+import { useHistory } from "react-router-dom";
 import classNames from "classnames";
-// @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
 // core components
@@ -19,12 +18,23 @@ import image from "../../assets/img/dashboard.jpg";
 import Dashboard from "../../components/Dashboard.js";
 import { Typography } from "@material-ui/core";
 
+import { connect } from 'react-redux';
+
 
 const useStyles = makeStyles(styles);
 
 function DashboardPage(props) {
   const classes = useStyles();
+  const history = useHistory();
   const { ...rest } = props;
+
+  React.useEffect(() => {
+    // prevent showing login page if logged in
+    if (!props?.security?.validToken) {
+        history.push('/login')
+    }
+  }, [])
+
   return (
     <div>
       <Header
@@ -57,4 +67,8 @@ function DashboardPage(props) {
   );
 }
 
-export default DashboardPage;
+const mapStateToProps = (state) => ({
+  security: state.security
+});
+
+export default connect(mapStateToProps, {})(DashboardPage);
