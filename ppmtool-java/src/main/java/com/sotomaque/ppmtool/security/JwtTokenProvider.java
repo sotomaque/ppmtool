@@ -23,7 +23,7 @@ public class JwtTokenProvider {
         // get date with MS
         Date now = new Date(System.currentTimeMillis());
         // get expiration date
-        Date expirationDate = new Date(now.getTime() + EXPIRATION_TIME);
+        Date expiryDate = new Date(now.getTime()+EXPIRATION_TIME);
 
         // get userId
         String userId = Long.toString(user.getId());
@@ -39,7 +39,7 @@ public class JwtTokenProvider {
                 .setSubject(userId)
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(expirationDate)
+                .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
     }

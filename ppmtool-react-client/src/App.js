@@ -21,7 +21,8 @@ import SignupPage from './pages/SignupPage/SignupPage';
 
 import jwt_decode from "jwt-decode";
 import setJWTToken from './securityUtils/setJWTToken';
-import { SET_CURRENT_USER } from './actions/types';
+import { SET_CURRENT_USER, GET_ERRORS } from './actions/types';
+import { logout } from './actions/securityActions';
 
 const jwtToken = localStorage.jwtToken;
 
@@ -33,12 +34,13 @@ if (jwtToken) {
     type: SET_CURRENT_USER,
     payload: decoded_jwtToken
   });
-
   const currentTime = Date.now()/1000;
 
   if (decoded_jwtToken?.exp < currentTime) {
-    // handle logout
-    // window.location.href="/";
+
+    store.dispatch(logout())
+    store.dispatch({ type: GET_ERRORS, payload: {} });
+    window.location.href="/";
   }
 }
 
