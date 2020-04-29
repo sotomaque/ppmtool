@@ -45,29 +45,29 @@ public class JwtTokenProvider {
     }
 
     // validate token
-    public boolean validateToken(String token) {
-        try {
+    public boolean validateToken(String token){
+        try{
             Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
             return true;
-        } catch (SignatureException ex) {
-            System.out.println("INVALID JWT SIGNATURE");
-        } catch (MalformedJwtException ex) {
-            System.out.println("INVALID JWT TOKEN");
-        } catch (ExpiredJwtException ex) {
-            System.out.println("EXPIRED JWT TOKEN");
-        } catch (UnsupportedJwtException ex) {
-            System.out.println("UNSUPPORTED JWT EXCEPTION");
-        } catch (IllegalArgumentException ex) {
-            System.out.println("JWT Claims String is Empty");
+        }catch (SignatureException ex){
+            System.out.println("Invalid JWT Signature");
+        }catch (MalformedJwtException ex){
+            System.out.println("Invalid JWT Token");
+        }catch (ExpiredJwtException ex){
+            System.out.println("Expired JWT token");
+        }catch (UnsupportedJwtException ex){
+            System.out.println("Unsupported JWT token");
+        }catch (IllegalArgumentException ex){
+            System.out.println("JWT claims string is empty");
         }
         return false;
     }
 
     // get userId from token (with CustomUserService)
     // extracting it from claims
-    public Long getUserIdFromJWT(String token) {
+    public Long getUserIdFromJWT(String token){
         Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
-        String id = (String) claims.get("id");
+        String id = (String)claims.get("id");
 
         return Long.parseLong(id);
     }

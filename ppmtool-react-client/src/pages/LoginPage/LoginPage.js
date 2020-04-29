@@ -30,7 +30,7 @@ const useStyles = makeStyles(styles);
 
 function LoginPage(props) {
     useLockBodyScroll(); // prevent scrolling
-
+    const classes = useStyles();
     const history = useHistory();
 
     const [username, setUsername] = React.useState('');
@@ -44,7 +44,6 @@ function LoginPage(props) {
     setTimeout(function() {
         setCardAnimation("");
     }, 700);
-    const classes = useStyles();
 
     React.useEffect(() => {
         if (props.errors) {
@@ -55,11 +54,21 @@ function LoginPage(props) {
             setErrorUsername('');
             setErrorPassword('');
         }
-
+        // redirect to dashboard upon successful login
         if (props?.security?.validToken) {
             history.push('/dashboard')
         }
-    }, [props])
+    }, [props]);
+
+    React.useEffect(() => {
+        setErrorUsername('');
+        setErrorPassword('');
+
+        // prevent showing login page if logged in
+        if (props?.security?.validToken) {
+            history.push('/dashboard')
+        }
+    }, [])
 
     const handleLoginPressed = (e) => {
         setLoading(true);

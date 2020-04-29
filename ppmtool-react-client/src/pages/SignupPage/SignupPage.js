@@ -30,7 +30,7 @@ const useStyles = makeStyles(styles);
 
 function SignupPage(props) {
     useLockBodyScroll(); // prevent scrolling
-
+    const classes = useStyles();
     const history = useHistory();
     
     const [fullName, setFullName] = React.useState('');
@@ -42,7 +42,7 @@ function SignupPage(props) {
     setTimeout(function() {
         setCardAnimation("");
     }, 700);
-    const classes = useStyles();
+
 
     const handleSignupPressed = (e) => {
         e.preventDefault();
@@ -56,6 +56,13 @@ function SignupPage(props) {
 
         props.createNewUser(newUser, history);
     }
+
+    React.useEffect(() => {
+        // prevent showing sign up page if logged in
+        if (props?.security?.validToken) {
+            history.push('/dashboard')
+        }
+    }, [])
 
     return (
         <>
@@ -226,7 +233,8 @@ function useLockBodyScroll() {
 }
 
 const mapStateToProps = (state) => ({
-    errors: state.errors
+    errors: state.errors,
+    security: state.security
 })
  
 export default connect(mapStateToProps, { createNewUser })(SignupPage);
